@@ -1,10 +1,14 @@
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 import org.jetbrains.kotlin.gradle.tasks.*
 
 plugins {
+    val kotlinVer: String by System.getProperties()
     application
-    kotlin("jvm") version "1.2.30"
+    kotlin("jvm") version kotlinVer
 }
+
+val javaVer: String by System.getProperties()
+val coroutinesVer: String by System.getProperties()
 
 group = "io.sureshg"
 version = "1.0-SNAPSHOT"
@@ -14,11 +18,11 @@ application {
 }
 
 kotlin {
-    experimental.coroutines = Coroutines.ENABLE
+    experimental.coroutines = ENABLE
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = javaVer
 }
 
 repositories {
@@ -27,5 +31,5 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.22.5")
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVer)
 }
