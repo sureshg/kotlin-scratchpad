@@ -1,17 +1,25 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.*
+import org.jetbrains.kotlin.gradle.dsl.*
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 import org.jetbrains.kotlin.gradle.tasks.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVer: String by System.getProperties()
+    val shadowVer: String by System.getProperties()
+    val versionsVer: String by System.getProperties()
+
     application
     kotlin("jvm") version kotlinVer
+    id("com.github.johnrengelman.shadow") version shadowVer
+    id("com.github.ben-manes.versions") version versionsVer
 }
 
 val javaVer: String by System.getProperties()
 val coroutinesVer: String by System.getProperties()
 
 group = "io.sureshg"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 application {
     mainClassName = "io.sureshg.MainKt"
@@ -21,8 +29,27 @@ kotlin {
     experimental.coroutines = ENABLE
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = javaVer
+val compileKotlin by tasks.getting(KotlinCompile::class) {
+    kotlinOptions {
+        verbose = true
+        jvmTarget = javaVer
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
+}
+
+val compileTestKotlin by tasks.getting(KotlinCompile::class) {
+    kotlinOptions {
+        verbose = true
+        jvmTarget = javaVer
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
+}
+
+tasks.withType<ShadowJar> {
+    description = "Create a fat JAR of $archiveName and runtime dependencies."
+    doLast {
+        println("FatJar: ${archivePath.path} (${archivePath.length().toDouble() / (1_000 * 1_000)} MB)")
+    }
 }
 
 repositories {
@@ -32,4 +59,14 @@ repositories {
 dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVer)
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutinesVer)
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-nio", coroutinesVer)
+
+    // compile("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
 }
+
+task<Wrapper>("wrapper") {
+    gradleVersion = "4.7"
+    distributionType = Wrapper.DistributionType.ALL
+}
+defaultTasks("clean", "tasks", "--all")
