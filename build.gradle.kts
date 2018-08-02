@@ -16,6 +16,7 @@ plugins {
 }
 
 val javaVer: String by System.getProperties()
+val gradleVer: String by System.getProperties()
 val coroutinesVer: String by System.getProperties()
 
 group = "io.sureshg"
@@ -33,7 +34,7 @@ val compileKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions {
         verbose = true
         jvmTarget = javaVer
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xprogressive")
     }
 }
 
@@ -41,7 +42,7 @@ val compileTestKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions {
         verbose = true
         jvmTarget = javaVer
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xprogressive")
     }
 }
 
@@ -61,12 +62,11 @@ dependencies {
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVer)
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutinesVer)
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-nio", coroutinesVer)
-
     // compile("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
 }
 
 task<Wrapper>("wrapper") {
-    gradleVersion = "4.7"
+    gradleVersion = gradleVer
     distributionType = Wrapper.DistributionType.ALL
 }
 defaultTasks("clean", "tasks", "--all")
