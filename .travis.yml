@@ -1,0 +1,36 @@
+language: java
+
+# Faster builds
+sudo: false
+
+env:
+  global:
+  - JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
+  # - JDK_JAVA_OPTIONS='--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED'
+
+jdk:
+- openjdk10
+- openjdk11
+
+os:
+- linux
+- osx
+
+before_script:
+- chmod +x gradlew
+- echo $HOME
+- echo $JAVA_OPTS
+
+script:
+- ./gradlew clean jacocoTestReport build --no-daemon
+
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
