@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.*
+import net.nemerosa.versioning.tasks.*
 import org.gradle.api.JavaVersion.VERSION_11
 import org.jetbrains.kotlin.gradle.dsl.*
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
@@ -9,6 +10,7 @@ plugins {
     val kotlinVer: String by System.getProperties()
     val shadowVer: String by System.getProperties()
     val versionsVer: String by System.getProperties()
+    val scmVersioning: String by System.getProperties()
 
     application
     idea
@@ -17,6 +19,7 @@ plugins {
     kotlin("jvm") version kotlinVer
     id("com.github.johnrengelman.shadow") version shadowVer
     id("com.github.ben-manes.versions") version versionsVer
+    id("net.nemerosa.versioning") version scmVersioning
 }
 
 val gradleVer: String by System.getProperties()
@@ -44,6 +47,7 @@ java {
 }
 
 tasks {
+    /** Java */
     withType<JavaCompile> {
         options.apply {
             encoding = "UTF-8"
@@ -52,6 +56,7 @@ tasks {
         }
     }
 
+    /** Kotlin */
     val compileKotlin by getting(KotlinCompile::class) {
         kotlinOptions {
             verbose = true
@@ -68,6 +73,7 @@ tasks {
         }
     }
 
+    /** Shading */
     withType<ShadowJar> {
         description = "Create a fat JAR of $archiveName and runtime dependencies."
         doLast {
@@ -75,6 +81,7 @@ tasks {
         }
     }
 
+    /** Code Coverage */
     withType<JacocoReport> {
         this.reports {
             xml.isEnabled = true
@@ -85,6 +92,7 @@ tasks {
         jacocoTestReport.dependsOn("test")
     }
 
+    /** JUnit 5 */
     withType<Test> {
         useJUnitPlatform()
         testLogging {
@@ -93,6 +101,13 @@ tasks {
         reports.html.isEnabled = true
     }
 
+    /** SCM Versioning */
+    withType<VersionFileTask> {
+        file = buildDir.resolve("version.properties")
+        prefix = "VERSION_"
+    }
+
+    /** Gradle Wrapper */
     getByName<Wrapper>("wrapper") {
         gradleVersion = gradleVer
         distributionType = Wrapper.DistributionType.ALL
