@@ -30,7 +30,6 @@ group = "io.sureshg"
 version = "0.1.0"
 description = "Kotlin scratchpad"
 
-
 application {
     mainClassName = "io.sureshg.MainKt"
 }
