@@ -1,5 +1,5 @@
 # build version
-version: 'build #{build}']
+version: 'build #{build}'
 
 # branches to build
 branches:
