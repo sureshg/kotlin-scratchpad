@@ -32,10 +32,9 @@ test_script:
 
 
 artifacts:
-- path: build/libs/*-all.jar
+- path: build\libs\kotlin-scratchpad-*.jar
   name: build
 
 # preserve dependencies between builds
 cache:
-- C:\maven\
-- C:\Users\appveyor\.m2
+- C:/Users/appveyor/.gradle
