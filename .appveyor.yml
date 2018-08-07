@@ -32,7 +32,7 @@ test_script:
 
 
 artifacts:
-- path: build\libs\kotlin-scratchpad-*.jar
+- path: build\libs\*
   name: build
 
 # preserve dependencies between builds
