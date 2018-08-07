@@ -28,6 +28,7 @@ matrix:
     jdk: openjdk-ea
 
   allow_failures:
+  - jdk: openjdk11
   - jdk: openjdk-ea
 
 # os:
