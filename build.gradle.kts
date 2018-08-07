@@ -44,7 +44,6 @@ java {
     targetCompatibility = JavaVersion.toVersion(javaCompatVer)
 }
 
-
 tasks {
     withType<JavaCompile> {
         options.apply {
@@ -87,6 +86,14 @@ tasks {
         jacocoTestReport.dependsOn("test")
     }
 
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+        reports.html.isEnabled = true
+    }
+
     getByName<Wrapper>("wrapper") {
         gradleVersion = gradleVer
         distributionType = Wrapper.DistributionType.ALL
@@ -104,12 +111,25 @@ dependencies {
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVer)
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutinesVer)
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-nio", coroutinesVer)
+    // implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
+
     implementation("com.squareup.retrofit2", "retrofit", "2.4.0")
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
     implementation("com.squareup.okhttp3", "okhttp-tls", "3.11.0")
     implementation("com.squareup.moshi", "moshi", "1.6.0")
     kapt("com.squareup.moshi", "moshi-kotlin-codegen", "1.6.0")
-    // implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
+
+    // JUnit5
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.0-M1")
+    testImplementation("org.junit.jupiter", "junit-jupiter-params", "5.3.0-M1")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.3.0-M1")
+    testImplementation("org.assertj", "assertj-core", "3.10.0")
+
+    // Mock
+    testImplementation("org.mockito", "mockito-core", "2.21.0")
+    testImplementation("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.0.0-RC1")
+
+    // Test web server
     testImplementation("com.squareup.okhttp3", "mockwebserver", "3.11.0")
 }
 
