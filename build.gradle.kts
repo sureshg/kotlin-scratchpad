@@ -57,7 +57,7 @@ java {
 
 jib {
     to {
-        image = "sureshg/kotlin-demo"
+        image = "sureshg/kotlin-demo:${project.version}"
         credHelper = "osxkeychain"
         auth {
             username = System.getenv("JIB_TO_USER")
@@ -140,15 +140,15 @@ tasks {
         prefix = "VERSION_"
     }
 
+    /** Google java format*/
+    withType<GoogleJavaFormat> {
+        tasks.getByName("build").dependsOn(this)
+    }
+
     /** Gradle Wrapper */
     getByName<Wrapper>("wrapper") {
         gradleVersion = gradleVer
         distributionType = Wrapper.DistributionType.ALL
-    }
-
-    /** Google java format*/
-    withType<GoogleJavaFormat> {
-        tasks.getByName("compileJava").dependsOn(this)
     }
 
     defaultTasks("clean", "tasks", "--all")
