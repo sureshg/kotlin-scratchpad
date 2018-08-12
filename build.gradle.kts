@@ -22,6 +22,7 @@ plugins {
     `help-tasks`
 
     kotlin("jvm") version kotlinVer
+    kotlin("kapt") version kotlinVer
     id("com.github.johnrengelman.shadow") version shadowVer
     id("com.github.ben-manes.versions") version versionsVer
     id("net.nemerosa.versioning") version scmVersioning
