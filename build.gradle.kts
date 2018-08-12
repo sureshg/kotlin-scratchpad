@@ -184,6 +184,7 @@ dependencies {
     runtimeOnly("org.slf4j", "slf4j-simple", "1.7.25")
 
     // Misc
+    implementation("com.github.ajalt", "clikt", "1.4.0")
     implementation("net.jodah", "failsafe", "1.1.0")
     compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
     compileOnly("org.graalvm", "graal-sdk", graalvmVer)

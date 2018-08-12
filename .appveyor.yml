@@ -32,7 +32,7 @@ test_script:
 
 
 artifacts:
-- path: build\libs\*
+- path: build\libs\*.jar
   name: build
 
 # preserve dependencies between builds
