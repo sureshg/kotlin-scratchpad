@@ -1,0 +1,3 @@
+# Used when doing build using Dockerfile
+**
+!build/libs/kotlin-scratchpad-*.jar

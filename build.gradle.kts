@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.*
+import com.github.sherter.googlejavaformatgradleplugin.*
+import com.google.cloud.tools.jib.image.*
 import net.nemerosa.versioning.tasks.*
-import org.gradle.api.JavaVersion.VERSION_11
 import org.jetbrains.kotlin.gradle.dsl.*
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 import org.jetbrains.kotlin.gradle.tasks.*
@@ -11,20 +12,28 @@ plugins {
     val shadowVer: String by System.getProperties()
     val versionsVer: String by System.getProperties()
     val scmVersioning: String by System.getProperties()
+    val googleJibVer: String by System.getProperties()
+    val springDepVer: String by System.getProperties()
+    val javaFmtVer: String by System.getProperties()
 
     application
     idea
     jacoco
     `help-tasks`
+
     kotlin("jvm") version kotlinVer
     id("com.github.johnrengelman.shadow") version shadowVer
     id("com.github.ben-manes.versions") version versionsVer
     id("net.nemerosa.versioning") version scmVersioning
+    id("com.google.cloud.tools.jib") version googleJibVer
+    id("io.spring.dependency-management") version springDepVer
+    id("com.github.sherter.google-java-format") version javaFmtVer
 }
 
 val gradleVer: String by System.getProperties()
 val ktCompatVer: String by System.getProperties()
 val javaCompatVer: String by System.getProperties()
+val graalvmVer: String by System.getProperties()
 val coroutinesVer: String by System.getProperties()
 val javaCompilerArgs = listOf("-Xlint:all", "-parameters")
 val ktCompilerArgs = listOf("-Xjsr305=strict", "-Xprogressive")
@@ -44,6 +53,30 @@ kotlin {
 java {
     sourceCompatibility = JavaVersion.toVersion(javaCompatVer)
     targetCompatibility = JavaVersion.toVersion(javaCompatVer)
+}
+
+jib {
+    to {
+        image = "sureshg/kotlin-demo"
+        credHelper = "osxkeychain"
+        auth {
+            username = System.getenv("JIB_TO_USER")
+            password = System.getenv("JIB_TO_PASSWORD")
+        }
+    }
+    container {
+        jvmFlags = listOf(
+            "-server",
+            "-Xms256m",
+            "-XX:+UseG1GC",
+            "-Djava.security.egd=file:/dev/./urandom"
+        )
+        mainClass = application.mainClassName
+        args = listOf("jib")
+        ports = listOf("8080-8090/tcp")
+        setFormat(ImageFormat.Docker)
+    }
+    setExtraDirectory(File("src/main/resources"))
 }
 
 tasks {
@@ -113,6 +146,11 @@ tasks {
         distributionType = Wrapper.DistributionType.ALL
     }
 
+    /** Google java format*/
+    withType<GoogleJavaFormat> {
+        tasks.getByName("build").dependsOn(this)
+    }
+
     defaultTasks("clean", "tasks", "--all")
 }
 
@@ -127,11 +165,27 @@ dependencies {
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-nio", coroutinesVer)
     // implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
 
+    // HTTPS + JSON
     implementation("com.squareup.retrofit2", "retrofit", "2.4.0")
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
     implementation("com.squareup.okhttp3", "okhttp-tls", "3.11.0")
     implementation("com.squareup.moshi", "moshi", "1.6.0")
+    implementation("com.jakewharton.retrofit", "retrofit2-reactor-adapter", "2.1.0")
+    implementation(
+        "com.jakewharton.retrofit",
+        "retrofit2-kotlin-coroutines-experimental-adapter",
+        "1.0.0"
+    )
     kapt("com.squareup.moshi", "moshi-kotlin-codegen", "1.6.0")
+
+    // Logging
+    implementation("org.slf4j", "slf4j-api", "1.7.25")
+    runtimeOnly("org.slf4j", "slf4j-simple", "1.7.25")
+
+    // Misc
+    implementation("net.jodah", "failsafe", "1.1.0")
+    compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
+    compileOnly("org.graalvm", "graal-sdk", graalvmVer)
 
     // JUnit5
     testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.0-M1")
