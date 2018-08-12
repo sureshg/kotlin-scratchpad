@@ -148,7 +148,7 @@ tasks {
 
     /** Google java format*/
     withType<GoogleJavaFormat> {
-        tasks.getByName("build").dependsOn(this)
+        tasks.getByName("compileJava").dependsOn(this)
     }
 
     defaultTasks("clean", "tasks", "--all")
