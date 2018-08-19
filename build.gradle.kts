@@ -29,6 +29,7 @@ plugins {
     id("com.google.cloud.tools.jib") version googleJibVer
     id("io.spring.dependency-management") version springDepVer
     id("com.github.sherter.google-java-format") version javaFmtVer
+    id("org.sonarqube") version "2.6.2"
 }
 
 val gradleVer: String by System.getProperties()
@@ -40,7 +41,7 @@ val javaCompilerArgs = listOf("-Xlint:all", "-parameters")
 val ktCompilerArgs = listOf("-Xjsr305=strict", "-Xprogressive")
 
 group = "io.sureshg"
-version = "0.1.0"
+version = "0.2.0"
 description = "Kotlin scratchpad"
 
 application {
@@ -58,7 +59,8 @@ java {
 
 jib {
     to {
-        image = "sureshg/kotlin-demo:${project.version}"
+        val tag = project.findProperty("tag") ?: project.version
+        image = "sureshg/kotlin-demo:$tag"
         credHelper = "osxkeychain"
         auth {
             username = System.getenv("JIB_TO_USER")
@@ -73,8 +75,9 @@ jib {
             "-Djava.security.egd=file:/dev/./urandom"
         )
         mainClass = application.mainClassName
-        args = listOf("jib")
+        args = listOf(project.description, project.version.toString())
         ports = listOf("8080-8090/tcp")
+        useCurrentTimestamp = true
         setFormat(ImageFormat.Docker)
     }
     setExtraDirectory(File("src/main/resources"))
@@ -91,21 +94,17 @@ tasks {
     }
 
     /** Kotlin */
-    val compileKotlin by getting(KotlinCompile::class) {
+    val options: KotlinCompile.() -> Unit = {
         kotlinOptions {
             verbose = true
             jvmTarget = ktCompatVer
-            freeCompilerArgs = ktCompilerArgs
+            javaParameters = true
+            freeCompilerArgs += ktCompilerArgs
         }
     }
 
-    val compileTestKotlin by getting(KotlinCompile::class) {
-        kotlinOptions {
-            verbose = true
-            jvmTarget = ktCompatVer
-            freeCompilerArgs = ktCompilerArgs
-        }
-    }
+    val compileKotlin by getting(KotlinCompile::class, options)
+    val compileTestKotlin by getting(KotlinCompile::class, options)
 
     /** Shading */
     withType<ShadowJar> {
@@ -190,10 +189,10 @@ dependencies {
     compileOnly("org.graalvm", "graal-sdk", graalvmVer)
 
     // JUnit5
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.0-M1")
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", "5.3.0-M1")
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.3.0-M1")
-    testImplementation("org.assertj", "assertj-core", "3.10.0")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.0-RC1")
+    testImplementation("org.junit.jupiter", "junit-jupiter-params", "5.3.0-RC1")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.3.0-RC1")
+    testImplementation("org.assertj", "assertj-core", "3.11.0")
 
     // Mock
     testImplementation("org.mockito", "mockito-core", "2.21.0")
@@ -202,4 +201,5 @@ dependencies {
     // Test web server
     testImplementation("com.squareup.okhttp3", "mockwebserver", "3.11.0")
 }
+
 

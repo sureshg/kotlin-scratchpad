@@ -17,5 +17,6 @@ val fib = buildSequence {
 }
 
 fun main(args: Array<String>) {
+    println(args.joinToString(" "))
     fib.take(10).forEach(::println)
 }
