@@ -1,60 +1,52 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.*
-import com.github.sherter.googlejavaformatgradleplugin.*
-import com.google.cloud.tools.jib.image.*
-import net.nemerosa.versioning.tasks.*
-import org.jetbrains.kotlin.gradle.dsl.*
-import org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
-import org.jetbrains.kotlin.gradle.tasks.*
+import com.google.cloud.tools.jib.image.ImageFormat
+import org.jetbrains.dokka.DokkaConfiguration
+import org.jetbrains.dokka.gradle.LinkMapping
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URL
 
 plugins {
-    val kotlinVer: String by System.getProperties()
-    val shadowVer: String by System.getProperties()
-    val versionsVer: String by System.getProperties()
-    val scmVersioning: String by System.getProperties()
-    val googleJibVer: String by System.getProperties()
-    val springDepVer: String by System.getProperties()
-    val javaFmtVer: String by System.getProperties()
-
+    java
     application
     idea
     jacoco
-    `help-tasks`
+    `maven-publish`
+    distribution
 
-    kotlin("jvm") version kotlinVer
-    kotlin("kapt") version kotlinVer
-    id("com.github.johnrengelman.shadow") version shadowVer
-    id("com.github.ben-manes.versions") version versionsVer
-    id("net.nemerosa.versioning") version scmVersioning
-    id("com.google.cloud.tools.jib") version googleJibVer
-    id("io.spring.dependency-management") version springDepVer
-    id("com.github.sherter.google-java-format") version javaFmtVer
-    id("org.sonarqube") version "2.6.2"
+    kotlin("jvm") version Versions.kotlin
+    kotlin("kapt") version Versions.kotlin
+    kotlin("plugin.noarg") version Versions.kotlin
+    kotlin("plugin.allopen") version Versions.kotlin
+    // kotlin("multiplatform") version Versions.kotlin
+    // kotlin("serialization") version Versions.kotlin
+    id("com.github.johnrengelman.shadow") version Versions.shadow
+    id("com.github.ben-manes.versions") version Versions.benmanesVersions
+    id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
+    id("org.jlleitschuh.gradle.ktlint") version Versions.ktlint
+    id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
+    id("org.jetbrains.dokka") version Versions.dokka
+    id("com.google.cloud.tools.jib") version Versions.googleJib
+    id("io.spring.dependency-management") version Versions.springDepMgmt
+    id("com.github.sherter.google-java-format") version Versions.googleJavaFormat
+    id("org.sonarqube") version Versions.sonarqube
 }
-
-val gradleVer: String by System.getProperties()
-val ktCompatVer: String by System.getProperties()
-val javaCompatVer: String by System.getProperties()
-val graalvmVer: String by System.getProperties()
-val coroutinesVer: String by System.getProperties()
-val javaCompilerArgs = listOf("-Xlint:all", "-parameters")
-val ktCompilerArgs = listOf("-Xjsr305=strict", "-Xprogressive")
 
 group = "io.sureshg"
 version = "0.2.0"
 description = "Kotlin scratchpad"
 
+val gitUrl = "https://github.com/sureshg/kotlin-scratchpad"
+
 application {
     mainClassName = "io.sureshg.MainKt"
 }
 
-kotlin {
-    experimental.coroutines = ENABLE
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-java {
-    sourceCompatibility = JavaVersion.toVersion(javaCompatVer)
-    targetCompatibility = JavaVersion.toVersion(javaCompatVer)
+ktlint {
+    ignoreFailures.set(true)
 }
 
 jib {
@@ -78,55 +70,37 @@ jib {
         args = listOf(project.description, project.version.toString())
         ports = listOf("8080-8090/tcp")
         useCurrentTimestamp = true
-        setFormat(ImageFormat.Docker)
+        format = ImageFormat.Docker
     }
     setExtraDirectory(File("src/main/resources"))
 }
 
+gitProperties {
+    customProperties["kotlin"] = Versions.kotlin
+}
+
 tasks {
-    /** Java */
+    // Java main and test
     withType<JavaCompile> {
         options.apply {
             encoding = "UTF-8"
             isIncremental = true
-            compilerArgs.addAll(javaCompilerArgs)
+            compilerArgs.addAll(listOf("-Xlint:all", "-parameters"))
         }
     }
 
-    /** Kotlin */
-    val options: KotlinCompile.() -> Unit = {
+    // Kotlin main and test
+    withType<KotlinCompile> {
         kotlinOptions {
             verbose = true
-            jvmTarget = ktCompatVer
+            jvmTarget = "1.8"
             javaParameters = true
-            freeCompilerArgs += ktCompilerArgs
+            freeCompilerArgs += listOf("-Xjsr305=strict", "-progressive")
         }
     }
 
-    val compileKotlin by getting(KotlinCompile::class, options)
-    val compileTestKotlin by getting(KotlinCompile::class, options)
-
-    /** Shading */
-    withType<ShadowJar> {
-        description = "Create a fat JAR of $archiveName and runtime dependencies."
-        doLast {
-            println("FatJar: ${archivePath.path} (${archivePath.length().toDouble() / (1_000 * 1_000)} MB)")
-        }
-    }
-
-    /** Code Coverage */
-    withType<JacocoReport> {
-        this.reports {
-            xml.isEnabled = true
-            html.isEnabled = false
-            csv.isEnabled = false
-        }
-        val jacocoTestReport by tasks
-        jacocoTestReport.dependsOn("test")
-    }
-
-    /** JUnit 5 */
-    withType<Test> {
+    // JUnit5
+    test {
         useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")
@@ -134,72 +108,175 @@ tasks {
         reports.html.isEnabled = true
     }
 
-    /** SCM Versioning */
-    withType<VersionFileTask> {
-        file = buildDir.resolve("version.properties")
-        prefix = "VERSION_"
+    // Distribution
+    distTar {
+        compression = Compression.GZIP
     }
 
-    /** Google java format*/
-    withType<GoogleJavaFormat> {
-        tasks.getByName("build").dependsOn(this)
+    // Uber jar
+    shadowJar {
+        description = "Create a fat JAR of $archiveFileName and runtime dependencies."
+        doLast {
+            val fatJar = archiveFile.get().asFile
+            println("FatJar: ${fatJar.path} (${fatJar.length().toDouble() / (1_000 * 1_000)} MB)")
+        }
     }
 
-    /** Gradle Wrapper */
-    getByName<Wrapper>("wrapper") {
-        gradleVersion = gradleVer
+    // Javadoc
+    dokka {
+        jdkVersion = 8
+        outputFormat = "javadoc"
+        outputDirectory = "$buildDir/javadoc"
+
+        linkMapping(delegateClosureOf<LinkMapping> {
+            dir = "src/main/kotlin"
+            url = "$gitUrl/tree/master/src/main/kotlin"
+            suffix = "#L"
+        })
+
+        externalDocumentationLink(delegateClosureOf<DokkaConfiguration.ExternalDocumentationLink.Builder> {
+            url = URL("https://docs.oracle.com/javase/8/docs/api/")
+        })
+    }
+
+    // Code Coverage
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = false
+            csv.isEnabled = false
+        }
+        dependsOn(":test")
+    }
+
+    // Google java format
+    this.googleJavaFormat {
+        dependsOn(":build")
+    }
+
+    // Generate pom
+    withType<GenerateMavenPom> {
+        destination = file("$buildDir/libs/${jar.get().baseName}.pom")
+    }
+
+    // Gradle Wrapper
+    wrapper {
+        gradleVersion = Versions.gradle
         distributionType = Wrapper.DistributionType.ALL
     }
 
     defaultTasks("clean", "tasks", "--all")
 }
 
+// Sources jar
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+// Javadoc jar
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(tasks.dokka)
+}
+
+// SourceSets
+// println(sourceSets.main.get().allSource.srcDirs)
+// println(kotlin.sourceSets.test.get().kotlin.srcDirs)
+
+publishing {
+    repositories {
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            url = uri("$buildDir/repo")
+        }
+    }
+    publications {
+        register<MavenPublication>("mavenJava") {
+            from(components["java"])
+            // artifact(tasks.jar.get())
+            artifact(tasks.shadowJar.get())
+            artifact(sourcesJar.get())
+            artifact(javadocJar.get())
+
+            pom {
+                packaging = "jar"
+                description.set("Gradle Kotlin DSL demo app")
+                inceptionYear.set("2019")
+                url.set(gitUrl)
+
+                developers {
+                    developer {
+                        id.set("sureshg")
+                        name.set("Suresh")
+                        email.set("contact@sureshg.io")
+                        url.set("https://sureshg.io")
+                    }
+                }
+
+                licenses {
+                    license {
+                        name.set("Apache License")
+                        url.set("http://opensource.org/licenses/apache-2.0")
+                        distribution.set("repo")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:https://github.com/sureshg/kotlin-scratchpad.git")
+                    developerConnection.set("scm:git:git@github.com:sureshg/kotlin-scratchpad.git")
+                    url.set("https://github.com/sureshg/kotlin-scratchpad.git")
+                }
+            }
+        }
+    }
+}
+
 repositories {
+    maven(WmtPublic.url)
     mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVer)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutinesVer)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-nio", coroutinesVer)
-    // implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-reactor", coroutinesVer)
+    implementation(Deps.coroutinesCore)
+    implementation(Deps.coroutinesJdk8)
 
     // HTTPS + JSON
-    implementation("com.squareup.retrofit2", "retrofit", "2.4.0")
-    implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
-    implementation("com.squareup.okhttp3", "okhttp-tls", "3.11.0")
-    implementation("com.squareup.moshi", "moshi", "1.6.0")
-    implementation("com.jakewharton.retrofit", "retrofit2-reactor-adapter", "2.1.0")
-    implementation(
-        "com.jakewharton.retrofit",
-        "retrofit2-kotlin-coroutines-experimental-adapter",
-        "1.0.0"
-    )
-    kapt("com.squareup.moshi", "moshi-kotlin-codegen", "1.6.0")
+    implementation(Deps.retrofit)
+    implementation(Deps.okhttp)
+    implementation(Deps.okhttpTls)
+    implementation(Deps.moshi)
+    implementation(Deps.moshiAdapters)
+    implementation(Deps.retrofitCoroutinesAdapter)
+    implementation(Deps.retrofitLogging)
+    implementation(Deps.commonsCodec)
+    implementation(Deps.retrofitConverterMoshi)
+    kapt(Deps.moshiKotlinCodegen)
 
     // Logging
-    implementation("org.slf4j", "slf4j-api", "1.7.25")
-    runtimeOnly("org.slf4j", "slf4j-simple", "1.7.25")
+    implementation(Deps.slf4jApi)
+    runtimeOnly(Deps.slf4jSimple)
 
     // Misc
-    implementation("com.github.ajalt", "clikt", "1.5.0")
-    implementation("net.jodah", "failsafe", "1.1.0")
-    compileOnly("com.google.code.findbugs", "jsr305", "3.0.2")
-    compileOnly("org.graalvm", "graal-sdk", graalvmVer)
+    implementation(Deps.rsocketCore)
+    implementation(Deps.rsocketNetty)
+    implementation(Deps.jol)
+    implementation(Deps.clikt)
+    implementation(Deps.failsafe)
+    compileOnly(Deps.jsr305)
+    compileOnly(Deps.graalSdk)
 
     // JUnit5
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.0-RC1")
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", "5.3.0-RC1")
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.3.0-RC1")
-    testImplementation("org.assertj", "assertj-core", "3.11.0")
+    testImplementation(Deps.junitJupiterApi)
+    testImplementation(Deps.junitJupiterParams)
+    testRuntimeOnly(Deps.junitJupiterEngine)
+    testImplementation(Deps.assertjCore)
 
     // Mock
-    testImplementation("org.mockito", "mockito-core", "2.21.0")
-    testImplementation("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.0.0-RC1")
-
-    // Test web server
-    testImplementation("com.squareup.okhttp3", "mockwebserver", "3.11.0")
+    testImplementation(Deps.mockito)
+    testImplementation(Deps.mockitoKotlin)
+    testImplementation(Deps.okhttpMWS)
 }
 
 

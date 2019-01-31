@@ -41,3 +41,7 @@ $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 [docker-hub]: https://hub.docker.com/r/sureshg/kotlin-demo
 [junit5-kotlin]: https://github.com/junit-team/junit5-samples/tree/master/junit5-jupiter-starter-gradle-kotlin
 [coda's-common-pom]: https://github.com/codahale/common-pom
+
+<!-- Gradle Kotlin DSL References -->
+[10]: https://blog.gradle.org/kotlin-dsl-1.0
+[11]: https://github.com/yschimke/okurl/blob/master/build.gradle.kts
