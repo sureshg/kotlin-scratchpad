@@ -11,8 +11,14 @@ Kotlin-ScratchPad
 Build 
 -----
 
- - For building the executable jar, run `./gradlew clean build`
+ - For building the executable jar, run
  
+   ```bash
+   $ ./gradlew clean build
+ 
+   # For checking dependency updates.
+   # ./gradlew clean dependencyUpdates
+   ```
  - For building and pushing `Docker` image, run 
    
    ```bash
