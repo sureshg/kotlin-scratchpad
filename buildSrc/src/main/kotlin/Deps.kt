@@ -57,10 +57,12 @@ object Versions {
     const val asn1 = "0.1.0"
     const val caffeine = "2.6.2"
     const val cache2k = "1.2.0.Final"
+    const val kolor = "0.0.2"
+    const val ktlint = "0.29.0"
 
     // Plugins
     const val gradle = "5.1.1"
-    const val ktlint = "7.0.0"
+    const val ktlintPlugin = "7.0.0"
     const val dokka = "0.9.17"
     const val shadow = "4.0.4"
     const val googleJib = "1.0.0"
@@ -162,6 +164,7 @@ object Deps {
     const val byteBuddy = "net.bytebuddy:byte-buddy:${Versions.byteBuddy}"
     const val jol = "org.openjdk.jol:jol-core:${Versions.jol}"
     const val japicmp = "com.github.siom79.japicmp:japicmp:${Versions.japicmp}"
+    const val kolor = "com.andreapivetta.kolor:kolor:${Versions.kolor}"
 
     const val eclipseCollections = "org.eclipse.collections:eclipse-collections:${Versions.eclipseCollections}"
     const val eclipseCollectionsApi = "org.eclipse.collections:eclipse-collections-api:${Versions.eclipseCollections}"

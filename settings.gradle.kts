@@ -1,6 +1,6 @@
 pluginManagement {
     repositories {
-        maven(WmtPublic.url)
+        // maven(KotlinEap.url)
         mavenCentral()
         gradlePluginPortal()
     }

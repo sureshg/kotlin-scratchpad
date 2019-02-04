@@ -7,7 +7,6 @@ Kotlin-ScratchPad
 [![Sonar Cloud](https://sonarcloud.io/api/project_badges/measure?project=io.sureshg%3Akotlin-scratchpad&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.sureshg%3Akotlin-scratchpad)
 [![DepShield Badge](https://depshield.sonatype.org/badges/sureshg/kotlin-scratchpad/depshield.svg)](https://depshield.github.io)
 
-
 Build 
 -----
 
@@ -50,6 +49,7 @@ $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 [1]: https://github.com/mockito/mockito/wiki/What%27s-new-in-Mockito-2#mock-the-unmockable-opt-in-mocking-of-final-classesmethods
 [2]: https://microbadger.com/images/sureshg/kotlin-demo:latest
 
+[install-jdk.sh]: https://github.com/sormuras/sormuras.github.io/blob/master/.travis.yml
 [docker-hub]: https://hub.docker.com/r/sureshg/kotlin-demo
 [junit5-kotlin]: https://github.com/junit-team/junit5-samples/tree/master/junit5-jupiter-starter-gradle-kotlin
 [coda's-common-pom]: https://github.com/codahale/common-pom

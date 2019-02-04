@@ -22,7 +22,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version Versions.shadow
     id("com.github.ben-manes.versions") version Versions.benmanesVersions
     id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
-    id("org.jlleitschuh.gradle.ktlint") version Versions.ktlint
+    id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
     id("org.hidetake.swagger.generator") version Versions.swaggerGen
     id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
     id("org.jetbrains.dokka") version Versions.dokka
@@ -49,6 +49,8 @@ java {
 }
 
 ktlint {
+    version.set(Versions.ktlint)
+    verbose.set(false)
     ignoreFailures.set(true)
 }
 
@@ -276,8 +278,9 @@ publishing {
 }
 
 repositories {
-    maven(WmtPublic.url)
+    // maven(KotlinEap.url)
     mavenCentral()
+    jcenter()
 }
 
 dependencies {

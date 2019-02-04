@@ -1,61 +1,62 @@
 language: java
-
-# Faster builds
 sudo: false
 
 env:
   global:
-  - JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
-  - SCAN="--scan --stacktrace --warning-mode=all"
-  # JDK_JAVA_OPTIONS='--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED'
-
-matrix:
-  include:
-  - os: linux
-    jdk: openjdk10
-    env: JACOCO='jacocoTestReport'
-  - os: linux
-    jdk: openjdk11
-  - os: linux
-    jdk: openjdk-ea
-
-  - os: osx
-    jdk: openjdk10
-    env: JACOCO='jacocoTestReport'
-  - os: osx
-    jdk: openjdk11
-  - os: osx
-    jdk: openjdk-ea
-
-  allow_failures:
-  - jdk: openjdk11
-  - jdk: openjdk-ea
-
-# os:
-# - linux
-# - osx
-#
-# jdk:
-# - openjdk10
-# - openjdk11
+    - JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
+    - SCAN="--scan --stacktrace --warning-mode=all"
 
 before_script:
-- chmod +x gradlew
+  - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
+
+jobs:
+  include:
+    - stage: 🍺 OpenJDK - Linux + Mac + Windows
+      os: linux
+      env:
+        - JDK=11
+        - JACOCO='jacocoTestReport'
+      jdk: openjdk11
+    - os: osx
+      env: JDK=11
+      jdk: openjdk11
+    - os: windows
+      env: JDK=11
+      jdk: openjdk11
+
+    - stage: ☕ jdk.java.net - OpenJDK - GPL
+      env: JDK=11
+      script: source install-jdk.sh -F 11
+    - env: JDK=12
+      script: source install-jdk.sh -F 12
+
+    - stage: 🚀 GraalVM
+      env: JDK=graalvm-ce-1.0.0-rc11
+      script: source install-jdk.sh --url https://github.com/oracle/graal/releases/download/vm-1.0.0-rc11/graalvm-ce-1.0.0-rc11-linux-amd64.tar.gz
+
+  allow_failures:
+    - os: windows
+    - jdk: JDK=12
+
+after_script:
+  - echo JAVA_HOME = ${JAVA_HOME}
+  - echo PATH = ${PATH}
+  - ls ${JAVA_HOME}
+  - java -version
 
 script:
-- echo $HOME
-- echo $JAVA_OPTS
-- ./gradlew --version
-- ./gradlew clean ${JACOCO} build --no-daemon
+  - echo $HOME
+  - echo $JAVA_OPTS
+  - ./gradlew clean ${JACOCO} publish --no-daemon
 
 before_cache:
-- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)

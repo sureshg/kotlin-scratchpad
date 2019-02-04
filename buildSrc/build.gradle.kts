@@ -8,8 +8,8 @@ kotlinDslPluginOptions {
 }
 
 repositories {
-    mavenLocal()
-    maven("https://repository.walmart.com/content/repositories/public/")
+    // maven("https://repo.xxxx.com/content/repositories/public/")
+    mavenCentral()
 }
 
 dependencies {
