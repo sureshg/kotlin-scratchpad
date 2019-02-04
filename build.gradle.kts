@@ -10,6 +10,7 @@ plugins {
     idea
     jacoco
     `maven-publish`
+    signing
     distribution
 
     kotlin("jvm") version Versions.kotlin
@@ -22,9 +23,11 @@ plugins {
     id("com.github.ben-manes.versions") version Versions.benmanesVersions
     id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
     id("org.jlleitschuh.gradle.ktlint") version Versions.ktlint
+    id("org.hidetake.swagger.generator") version Versions.swaggerGen
     id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
     id("org.jetbrains.dokka") version Versions.dokka
     id("com.google.cloud.tools.jib") version Versions.googleJib
+    id("net.researchgate.release") version Versions.gradleRelease
     id("io.spring.dependency-management") version Versions.springDepMgmt
     id("com.github.sherter.google-java-format") version Versions.googleJavaFormat
     id("org.sonarqube") version Versions.sonarqube
@@ -77,6 +80,10 @@ jib {
 
 gitProperties {
     customProperties["kotlin"] = Versions.kotlin
+}
+
+release {
+    revertOnFail = true
 }
 
 tasks {
@@ -154,6 +161,11 @@ tasks {
         dependsOn(":build")
     }
 
+    // Release depends on publish.
+    afterReleaseBuild {
+        dependsOn(":publish")
+    }
+
     // Generate pom
     withType<GenerateMavenPom> {
         destination = file("$buildDir/libs/${jar.get().baseName}.pom")
@@ -180,6 +192,30 @@ val javadocJar by tasks.registering(Jar::class) {
     from(tasks.dokka)
 }
 
+// Tar distribution
+distributions {
+    getByName("main") {
+        contents {
+            from("${rootProject.projectDir}") {
+                include("README.md", "LICENSE")
+            }
+            from("${rootProject.projectDir}/src/main/scripts") {
+                fileMode = Integer.parseUnsignedInt("755", 8)
+                into("bin")
+            }
+            from("${rootProject.projectDir}/pkg") {
+                into("pkg")
+            }
+            into("lib") {
+                from(tasks.jar)
+            }
+            into("lib") {
+                from(configurations.runtimeClasspath)
+            }
+        }
+    }
+}
+
 // SourceSets
 // println(sourceSets.main.get().allSource.srcDirs)
 // println(kotlin.sourceSets.test.get().kotlin.srcDirs)
@@ -198,7 +234,9 @@ publishing {
             artifact(tasks.shadowJar.get())
             artifact(sourcesJar.get())
             artifact(javadocJar.get())
+            artifact(tasks.distTar.get())
 
+            // pom.addDependencies(project)
             pom {
                 packaging = "jar"
                 description.set("Gradle Kotlin DSL demo app")
@@ -216,16 +254,21 @@ publishing {
 
                 licenses {
                     license {
-                        name.set("Apache License")
-                        url.set("http://opensource.org/licenses/apache-2.0")
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                         distribution.set("repo")
                     }
                 }
 
                 scm {
-                    connection.set("scm:git:https://github.com/sureshg/kotlin-scratchpad.git")
-                    developerConnection.set("scm:git:git@github.com:sureshg/kotlin-scratchpad.git")
-                    url.set("https://github.com/sureshg/kotlin-scratchpad.git")
+                    url.set(gitUrl)
+                    connection.set("scm:git:git://github.com/sureshg/kotlin-scratchpad.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/sureshg/kotlin-scratchpad.git")
+                }
+
+                issueManagement {
+                    system.set("github")
+                    url.set("$gitUrl/issues")
                 }
             }
         }
@@ -278,5 +321,3 @@ dependencies {
     testImplementation(Deps.mockitoKotlin)
     testImplementation(Deps.okhttpMWS)
 }
-
-

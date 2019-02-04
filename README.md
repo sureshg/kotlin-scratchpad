@@ -18,7 +18,14 @@ Build
  
    # For checking dependency updates.
    # ./gradlew clean dependencyUpdates
+   
+   # For publishing to maven repo
+   # ./gradlew clean publish
+   
+   # For creating dist tar
+   # ./gradlew clean distTar
    ```
+   
  - For building and pushing `Docker` image, run 
    
    ```bash
@@ -39,7 +46,6 @@ $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 ```
 
 <!--- Badges --->
-
 [0]: https://github.com/guenhter/kotlin-unit-testing
 [1]: https://github.com/mockito/mockito/wiki/What%27s-new-in-Mockito-2#mock-the-unmockable-opt-in-mocking-of-final-classesmethods
 [2]: https://microbadger.com/images/sureshg/kotlin-demo:latest
@@ -51,3 +57,6 @@ $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 <!-- Gradle Kotlin DSL References -->
 [10]: https://blog.gradle.org/kotlin-dsl-1.0
 [11]: https://github.com/yschimke/okurl/blob/master/build.gradle.kts
+[12]: https://docs.gradle.org/current/userguide/publishing_maven.html
+[13]: https://docs.gradle.org/current/userguide/signing_plugin.html#signing_plugin
+[14]: https://medium.com/@nmauti/sign-and-publish-on-maven-central-a-project-with-the-new-maven-publish-gradle-plugin-22a72a4bfd4b

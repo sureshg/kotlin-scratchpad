@@ -17,11 +17,11 @@ object Versions {
     const val retrofit = "2.5.0"
     const val commonsCodec = "1.11"
     const val rsocket = "0.11.15"
-    const val failsafe = "2.0.0"
+    const val failsafe = "2.0.1"
     const val assertj = "3.11.1"
     const val graal = "1.0.0-rc11"
     const val junit = "5.3.2"
-    const val mockito = "2.23.4"
+    const val mockito = "2.24.0"
     const val awaitility = "3.1.6"
     const val sshj = "0.26.0"
     const val jol = "0.9"
@@ -47,10 +47,20 @@ object Versions {
     const val japicmp = "0.13.0"
     const val jjwt = "0.10.5"
     const val jkeychain = "1.0.0"
+    const val openpdf = "1.2.9"
+    const val orsonpdf = "1.8"
+    const val jfreesvg = "3.3"
+    const val jibCore = "0.1.1"
+    const val swaggerUI = "3.10.0"
+    const val swaggerCodegenCli = "3.0.0"
+    const val smbj = "0.9.1"
+    const val asn1 = "0.1.0"
+    const val caffeine = "2.6.2"
+    const val cache2k = "1.2.0.Final"
 
     // Plugins
     const val gradle = "5.1.1"
-    const val ktlint = "6.3.1"
+    const val ktlint = "7.0.0"
     const val dokka = "0.9.17"
     const val shadow = "4.0.4"
     const val googleJib = "1.0.0"
@@ -65,6 +75,7 @@ object Versions {
     const val jmhPlugin = "0.4.7"
     const val swaggerGen = "2.16.0"
     const val gitProperties = "2.0.0"
+    const val gradleRelease = "2.8.0"
 }
 
 object Deps {
@@ -115,11 +126,18 @@ object Deps {
     const val conscryptUber = "org.conscrypt:conscrypt-openjdk-uber:${Versions.conscrypt}"
     const val tink = "com.google.crypto.tink:tink:${Versions.tink}"
     const val sshj = "com.hierynomus:sshj:${Versions.sshj}"
+    const val smbj = "com.hierynomus:smbj:${Versions.smbj}"
+    const val asn1 = "com.hierynomus:asn-one:${Versions.asn1}"
 
     const val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4j}"
     const val slf4jSimple = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val slf4jNop = "org.slf4j:slf4j-nop:${Versions.slf4j}"
 
+    const val caffeine = "com.github.ben-manes.caffeine:caffeine:${Versions.caffeine}"
+    const val cache2kApi = "org.cache2k:cache2k-api:${Versions.cache2k}"
+    const val cache2kCore = "org.cache2k:cache2k-core:${Versions.cache2k}"
+
+    const val jibCore = "com.google.cloud.tools:jib-core:${Versions.jibCore}"
     const val failsafe = "net.jodah:failsafe:${Versions.failsafe}"
     const val nettyResolveDns = "io.netty:netty-resolver-dns:${Versions.netty}"
     const val jffi = "com.github.jnr:jffi:${Versions.jnrJffi}"
@@ -130,9 +148,11 @@ object Deps {
     const val jjwtImpl = "io.jsonwebtoken:jjwt-impl:${Versions.jjwt}"
     const val jjwtJackson = "io.jsonwebtoken:jjwt-jackson:${Versions.jjwt}"
     const val jkeychain = "pt.davidafsilva.apple:jkeychain:${Versions.jkeychain}"
-
-
+    const val jfreesvg = "org.jfree:jfreesvg:${Versions.jfreesvg}"
+    const val orsonpdf = "com.orsonpdf:orsonpdf:${Versions.orsonpdf}"
+    const val openpdf = "com.github.librepdf:openpdf:${Versions.openpdf}"
     const val jsr305 = "com.google.code.findbugs:jsr305:${Versions.jsr305}"
+
     const val clikt = "com.github.ajalt:clikt:${Versions.clikt}"
     const val jline = "org.jline:jline:${Versions.jline}"
     const val jlineTerminal = "org.jline:jline-terminal:${Versions.jline}"
@@ -155,13 +175,14 @@ object Deps {
     const val rsocketCore = "io.rsocket:rsocket-core:${Versions.rsocket}"
     const val rsocketNetty = "io.rsocket:rsocket-transport-netty:${Versions.rsocket}"
 
+    const val swaggerUI = "org.webjars:swagger-ui:${Versions.swaggerUI}"
+    const val swaggerCodegenCli = "io.swagger.codegen.v3:swagger-codegen-cli:${Versions.swaggerCodegenCli}"
     const val junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
     const val junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
     const val junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit}"
     const val assertjCore = "org.assertj:assertj-core:${Versions.assertj}"
     const val awaitility = "org.awaitility:awaitility:${Versions.awaitility}"
     const val awaitilityKotlin = "org.awaitility:awaitility-kotlin:${Versions.awaitility}"
-
     const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}"
 }
