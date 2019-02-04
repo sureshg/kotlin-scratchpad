@@ -34,7 +34,7 @@ plugins {
 }
 
 group = "io.sureshg"
-version = "0.2.0"
+version = "0.3.0"
 description = "Kotlin scratchpad"
 
 val gitUrl = "https://github.com/sureshg/kotlin-scratchpad"
@@ -56,8 +56,8 @@ ktlint {
 
 jib {
     to {
-        val tag = project.findProperty("tag") ?: project.version
-        image = "sureshg/kotlin-demo:$tag"
+        image = "sureshg/kotlin-demo"
+        tags = setOf(project.version.toString(), "latest")
         credHelper = "osxkeychain"
         auth {
             username = System.getenv("JIB_TO_USER")

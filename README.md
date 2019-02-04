@@ -28,11 +28,8 @@ Build
  - For building and pushing `Docker` image, run 
    
    ```bash
-   # Image with tag as current artifact version.
+   # Image with tags as current artifact version and "latest"
    $ ./gradlew jib
-
-   # Image with "latest" tag
-   $ ./gradlew jib -Ptag=latest
    ```
    
  :whale: [Docker Hub URL][docker-hub]
@@ -41,6 +38,7 @@ Run
 ---
 
 ```bash
+$ docker pull sureshg/kotlin-demo:latest
 $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 ```
 
