@@ -2,10 +2,10 @@ Kotlin-ScratchPad
 =================
 [![Build Status](https://travis-ci.org/sureshg/kotlin-scratchpad.svg?branch=master)](https://travis-ci.org/sureshg/kotlin-scratchpad)
 [![Build status](https://ci.appveyor.com/api/projects/status/bryiiki9fdt6vo60?svg=true)](https://ci.appveyor.com/project/sureshg/kotlin-scratchpad)
+[![Docker Hub](https://img.shields.io/docker/pulls/sureshg/kotlin-demo.svg?label=Docker%20Hub&logo=docker&style=flat-square)][docker-hub]
 [![codecov](https://codecov.io/gh/sureshg/kotlin-scratchpad/branch/master/graph/badge.svg)](https://codecov.io/gh/sureshg/kotlin-scratchpad)
 [![GitHub release](https://img.shields.io/github/release/JetBrains/kotlin.svg?style=flat-square&label=Kotlin)](https://github.com/JetBrains/kotlin/releases/latest)
 [![Sonar Cloud](https://sonarcloud.io/api/project_badges/measure?project=io.sureshg%3Akotlin-scratchpad&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.sureshg%3Akotlin-scratchpad)
-[![DepShield Badge](https://depshield.sonatype.org/badges/sureshg/kotlin-scratchpad/depshield.svg)](https://depshield.github.io)
 
 Build 
 -----
@@ -51,6 +51,7 @@ $ docker run -it --rm --name kotlin-demo sureshg/kotlin-demo:latest
 [docker-hub]: https://hub.docker.com/r/sureshg/kotlin-demo
 [junit5-kotlin]: https://github.com/junit-team/junit5-samples/tree/master/junit5-jupiter-starter-gradle-kotlin
 [coda's-common-pom]: https://github.com/codahale/common-pom
+[Deps Shield]: https://depshield.sonatype.org/badges/sureshg/kotlin-scratchpad/depshield.svg
 
 <!-- Gradle Kotlin DSL References -->
 [10]: https://blog.gradle.org/kotlin-dsl-1.0
