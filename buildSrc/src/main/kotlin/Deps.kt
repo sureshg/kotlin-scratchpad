@@ -58,7 +58,7 @@ object Versions {
     const val caffeine = "2.6.2"
     const val cache2k = "1.2.0.Final"
     const val kolor = "0.0.2"
-    const val ktlint = "0.29.0"
+    const val ktlint = "0.30.0"
 
     // Plugins
     const val gradle = "5.1.1"
