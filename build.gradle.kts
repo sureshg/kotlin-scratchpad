@@ -235,7 +235,7 @@ publishing {
             // artifact(tasks.jar.get())
             artifact(tasks.shadowJar.get())
             artifact(sourcesJar.get())
-            artifact(javadocJar.get())
+            // artifact(javadocJar.get())
             artifact(tasks.distTar.get())
 
             // pom.addDependencies(project)
