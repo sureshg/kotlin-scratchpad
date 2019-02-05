@@ -8,7 +8,7 @@ kotlinDslPluginOptions {
 }
 
 repositories {
-    // maven("https://repo.xxxx.com/content/repositories/public/")
+    // maven("https://repo.xxxx.com")
     mavenCentral()
 }
 

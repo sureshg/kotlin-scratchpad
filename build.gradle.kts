@@ -28,6 +28,7 @@ plugins {
     id("org.jetbrains.dokka") version Versions.dokka
     id("com.google.cloud.tools.jib") version Versions.googleJib
     id("net.researchgate.release") version Versions.gradleRelease
+    // id("org.datlowe.maven-publish-auth") version Versions.mavenPublishAuth
     id("io.spring.dependency-management") version Versions.springDepMgmt
     id("com.github.sherter.google-java-format") version Versions.googleJavaFormat
     id("org.sonarqube") version Versions.sonarqube

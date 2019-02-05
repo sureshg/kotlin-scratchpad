@@ -16,10 +16,10 @@ object Versions {
     const val ok2Curl = "0.4.5"
     const val retrofit = "2.5.0"
     const val commonsCodec = "1.11"
-    const val rsocket = "0.11.15"
+    const val rsocket = "0.11.16"
     const val failsafe = "2.0.1"
     const val assertj = "3.11.1"
-    const val graal = "1.0.0-rc11"
+    const val graal = "1.0.0-rc12"
     const val junit = "5.3.2"
     const val mockito = "2.24.0"
     const val awaitility = "3.1.6"
@@ -78,6 +78,7 @@ object Versions {
     const val swaggerGen = "2.16.0"
     const val gitProperties = "2.0.0"
     const val gradleRelease = "2.8.0"
+    const val mavenPublishAuth = "2.0.2"
 }
 
 object Deps {

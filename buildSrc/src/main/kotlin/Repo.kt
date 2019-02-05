@@ -7,7 +7,7 @@ object Jitpack : Repo("jitpack", "https://jitpack.io")
 object KotlinEap : Repo("kotlin-eap", "https://dl.bintray.com/kotlin/kotlin-eap")
 object GradlePlugins : Repo("gradle_plugin", "https://plugins.gradle.org/m2/")
 object SonatypeSnapshots : Repo("sonatype-snapshots", "https://oss.sonatype.org/content/repositories/snapshots/")
-object SonatyperReleases : Repo("sonatype-releases", "https://oss.sonatype.org/content/repositories/releases/")
+object SonatypeReleases : Repo("sonatype-releases", "https://oss.sonatype.org/content/repositories/releases/")
 
 /**
  * Checks if it's snapshot version string.
