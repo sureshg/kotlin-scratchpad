@@ -8,36 +8,33 @@ plugins {
     java
     application
     idea
+    kotlinJvm
+    kotlinKapt
+    dokka
+    shadow
+    benmanesVersions
+    buildSrcVersions
+    ktlint
+    swaggerGenerator
+    gitProperties
+    googleJib
+    gradleRelease
+    springDepMgmt
+    googleJavaFormat
+    sonarqube
     jacoco
     `maven-publish`
     signing
     distribution
-
-    kotlin("jvm") version Versions.kotlin
-    kotlin("kapt") version Versions.kotlin
-    kotlin("plugin.noarg") version Versions.kotlin
-    kotlin("plugin.allopen") version Versions.kotlin
-    // kotlin("multiplatform") version Versions.kotlin
-    // kotlin("serialization") version Versions.kotlin
-    id("com.github.johnrengelman.shadow") version Versions.shadow
-    id("com.github.ben-manes.versions") version Versions.benmanesVersions
-    id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
-    id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
-    id("org.hidetake.swagger.generator") version Versions.swaggerGen
-    id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
-    id("org.jetbrains.dokka") version Versions.dokka
-    id("com.google.cloud.tools.jib") version Versions.googleJib
-    id("net.researchgate.release") version Versions.gradleRelease
-    // id("org.datlowe.maven-publish-auth") version Versions.mavenPublishAuth
-    id("io.spring.dependency-management") version Versions.springDepMgmt
-    id("com.github.sherter.google-java-format") version Versions.googleJavaFormat
-    id("org.sonarqube") version Versions.sonarqube
+    // kotlinNoArg
+    // kotlinAllOpen
+    // kotlinMultiplatform
+    // kotlinSerialization
+    // mavenPublishAuth
 }
 
 group = "io.sureshg"
-version = "0.3.0"
 description = "Kotlin scratchpad"
-
 val gitUrl = "https://github.com/sureshg/kotlin-scratchpad"
 
 application {
@@ -236,13 +233,13 @@ publishing {
             // artifact(tasks.jar.get())
             artifact(tasks.shadowJar.get())
             artifact(sourcesJar.get())
-            // artifact(javadocJar.get())
+            artifact(javadocJar.get())
             artifact(tasks.distTar.get())
 
             // pom.addDependencies(project)
             pom {
                 packaging = "jar"
-                description.set("Gradle Kotlin DSL demo app")
+                description.set(project.description)
                 inceptionYear.set("2019")
                 url.set(gitUrl)
 
@@ -265,8 +262,9 @@ publishing {
 
                 scm {
                     url.set(gitUrl)
-                    connection.set("scm:git:git://github.com/sureshg/kotlin-scratchpad.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/sureshg/kotlin-scratchpad.git")
+                    tag.set("HEAD")
+                    connection.set("scm:git:$gitUrl.git")
+                    developerConnection.set("scm:git:$gitUrl.git")
                 }
 
                 issueManagement {
@@ -315,9 +313,7 @@ dependencies {
     compileOnly(Deps.graalSdk)
 
     // JUnit5
-    testImplementation(Deps.junitJupiterApi)
-    testImplementation(Deps.junitJupiterParams)
-    testRuntimeOnly(Deps.junitJupiterEngine)
+    testImplementation(Deps.junitJupiter)
     testImplementation(Deps.assertjCore)
 
     // Mock

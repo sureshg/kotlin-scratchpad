@@ -15,6 +15,11 @@ object SonatypeReleases : Repo("sonatype-releases", "https://oss.sonatype.org/co
 fun Any?.isSnapshot() = toString().endsWith("SNAPSHOT", true)
 
 /**
+ * Returns the Nexus publishing [Repo] based on the version.
+ */
+val Project.publishingRepo get() = if (version.isSnapshot()) SonatypeSnapshots else SonatypeReleases
+
+/**
  * Add the all maven runtime dependencies to pom.
  *
  * @param [project] gradle project.
