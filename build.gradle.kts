@@ -102,7 +102,7 @@ tasks {
             verbose = true
             jvmTarget = "1.8"
             javaParameters = true
-            freeCompilerArgs += listOf("-Xjsr305=strict", "-progressive")
+            freeCompilerArgs += listOf("-Xjsr305=strict", "-Xjvm-default=enable", "-progressive")
         }
     }
 
