@@ -52,6 +52,13 @@ ktlint {
     ignoreFailures.set(true)
 }
 
+idea {
+    module {
+        sourceDirs.addAll(files("build/generated/source/kapt/main", "build/generated/source/kaptKotlin/main"))
+        generatedSourceDirs.addAll(files("build/generated/source/kapt/main", "build/generated/source/kaptKotlin/main"))
+    }
+}
+
 jib {
     to {
         image = "sureshg/kotlin-demo"
@@ -309,9 +316,10 @@ dependencies {
     implementation(Deps.jol)
     implementation(Deps.clikt)
     implementation(Deps.failsafe)
+    implementation(Deps.classgraph)
     compileOnly(Deps.jsr305)
     compileOnly(Deps.graalSdk)
-
+    
     // JUnit5
     testImplementation(Deps.junitJupiter)
     testImplementation(Deps.assertjCore)

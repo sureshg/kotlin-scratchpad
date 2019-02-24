@@ -7,23 +7,24 @@ import io.sureshg.json.DefaultJsonDataAdapter
 import java.util.*
 import kotlin.system.measureTimeMillis
 
+// object Seq {
+//     val fib = sequence {
+//         var a = 0
+//         var b = 1
 
-val fib = sequence {
-    var a = 0
-    var b = 1
+//         while (true) {
+//             yield(b)
+//             val next = a + b
+//             a = b
+//             b = next
+//         }
 
-    while (true) {
-        yield(b)
-        val next = a + b
-        a = b
-        b = next
-    }
-
-}
+//     }
+// }
 
 fun main(args: Array<String>) {
     println(args.joinToString(" "))
-    fib.take(10).forEach(::println)
+    //Seq.fib.take(10).forEach(::println)
 
     val moshi = Moshi.Builder().add(
         DefaultJsonDataAdapter.newFactory(
@@ -51,11 +52,31 @@ fun main(args: Array<String>) {
         }
     })
 
+    println(toHex("This is test message".toByteArray()))
+
 }
 
 
 @JsonClass(generateAdapter = true)
 data class Blog(
+    val id: Int,
+    val name: String,
+    val desc: String = "",
+    val content: String? = null,
+    val created: Date?
+)
+
+@JsonClass(generateAdapter = true)
+data class Blog1(
+    val id: Int,
+    val name: String,
+    val desc: String = "",
+    val content: String? = null,
+    val created: Date?
+)
+
+@JsonClass(generateAdapter = true)
+data class Blog2(
     val id: Int,
     val name: String,
     val desc: String = "",

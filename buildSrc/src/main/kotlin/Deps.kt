@@ -1,7 +1,8 @@
 @file:Suppress("unused")
 
-import org.gradle.kotlin.dsl.*
-import org.gradle.plugin.use.*
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.version
+import org.gradle.plugin.use.PluginDependenciesSpec
 
 object Versions {
     // Deps
@@ -67,16 +68,17 @@ object Versions {
     const val reactor = "3.2.5.RELEASE"
     const val ff4j = "1.3.0"
     const val jmh = "1.21"
+    const val classgraph = "4.8.7"
 
     // Plugins
     const val gradle = "5.2.1"
     const val ktlintPlugin = "7.1.0"
     const val dokka = "0.9.17"
     const val shadow = "4.0.4"
-    const val googleJib = "1.0.0"
+    const val googleJib = "1.0.1"
     const val sonarqube = "2.7"
     const val nemerosaVersioning = "2.8.2"
-    const val springDepMgmt = "1.0.6.RELEASE"
+    const val springDepMgmt = "1.0.7.RELEASE"
     const val buildSrcVersions = "0.3.2"
     const val googleJavaFormat = "0.8"
     const val benmanesVersions = "0.20.0"
@@ -152,6 +154,7 @@ object Deps {
     const val jibCore = "com.google.cloud.tools:jib-core:${Versions.jibCore}"
     const val failsafe = "net.jodah:failsafe:${Versions.failsafe}"
     const val nettyResolveDns = "io.netty:netty-resolver-dns:${Versions.netty}"
+    const val classgraph = "io.github.classgraph:classgraph:${Versions.classgraph}"
     const val jffi = "com.github.jnr:jffi:${Versions.jnrJffi}"
     const val jnrUnixSocket = "com.github.jnr:jnr-unixsocket:${Versions.jnrUnixSocket}"
     const val commonsIO = "commons-io:commons-io:${Versions.commonsIO}"
@@ -232,7 +235,7 @@ inline val PluginDependenciesSpec.mavenPublishAuth get() = id("org.datlowe.maven
 inline val PluginDependenciesSpec.javafx get() = id("org.openjfx.javafxplugin") version Versions.javafxPlugin
 inline val PluginDependenciesSpec.jmh get() = id("me.champeau.gradle.jmh") version Versions.jmhPlugin
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow") version Versions.shadow
-inline val PluginDependenciesSpec.buildSrcVersions get() =  id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
+inline val PluginDependenciesSpec.buildSrcVersions get() = id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
 inline val PluginDependenciesSpec.swaggerGenerator get() = id("org.hidetake.swagger.generator") version Versions.swaggerGen
-inline val PluginDependenciesSpec.googleJib get() =  id("com.google.cloud.tools.jib") version Versions.googleJib
+inline val PluginDependenciesSpec.googleJib get() = id("com.google.cloud.tools.jib") version Versions.googleJib
 inline val PluginDependenciesSpec.sonarqube get() = id("org.sonarqube") version Versions.sonarqube
