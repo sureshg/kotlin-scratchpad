@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.google.cloud.tools.jib.image.ImageFormat
 import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.LinkMapping
@@ -35,6 +36,8 @@ plugins {
 
 group = "io.sureshg"
 description = "Kotlin scratchpad"
+
+val shaded: String by project
 val gitUrl = "https://github.com/sureshg/kotlin-scratchpad"
 
 application {
@@ -93,6 +96,7 @@ release {
     revertOnFail = true
 }
 
+
 tasks {
     // Java main and test
     withType<JavaCompile> {
@@ -127,12 +131,28 @@ tasks {
         compression = Compression.GZIP
     }
 
+    // Shaded jar
+    val relocateShadowJar by registering(ConfigureShadowRelocation::class) {
+        prefix = "shadow"
+        target = shadowJar.get()
+        description = "Automatically relocating all the dependencies with '$prefix' prefix."
+
+        doFirst {
+            println(description)
+        }
+    }
+
     // Uber jar
     shadowJar {
+        classifier = "uber"
         description = "Create a fat JAR of $archiveFileName and runtime dependencies."
         doLast {
             val fatJar = archiveFile.get().asFile
             println("FatJar: ${fatJar.path} (${fatJar.length().toDouble() / (1_000 * 1_000)} MB)")
+        }
+
+        if (shaded.toBoolean()) {
+            dependsOn(relocateShadowJar)
         }
     }
 
@@ -319,7 +339,7 @@ dependencies {
     implementation(Deps.classgraph)
     compileOnly(Deps.jsr305)
     compileOnly(Deps.graalSdk)
-    
+
     // JUnit5
     testImplementation(Deps.junitJupiter)
     testImplementation(Deps.assertjCore)
