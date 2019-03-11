@@ -31,12 +31,14 @@ jobs:
       script: source install-jdk.sh -F 12
 
     - stage: 🚀 GraalVM CE
-      env: JDK=graalvm-ce-1.0.0-rc12
-      script: source install-jdk.sh --url https://github.com/oracle/graal/releases/download/vm-1.0.0-rc12/graalvm-ce-1.0.0-rc12-linux-amd64.tar.gz
+      env:
+        - GRAALVM_VERSION=1.0.0-rc13
+        - JDK=graalvm-ce-$GRAALVM_VERSION
+      script: source install-jdk.sh --url https://github.com/oracle/graal/releases/download/vm-$GRAALVM_VERSION/graalvm-ce-$GRAALVM_VERSION-linux-amd64.tar.gz
 
   allow_failures:
     - os: windows
-    - jdk: JDK=12
+    - jdk: JDK=13
 
 script:
   - echo $HOME
