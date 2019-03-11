@@ -339,6 +339,7 @@ dependencies {
     implementation(Deps.classgraph)
     compileOnly(Deps.jsr305)
     compileOnly(Deps.graalSdk)
+    compileOnly(Deps.substratevm)
 
     // JUnit5
     testImplementation(Deps.junitJupiter)

@@ -68,7 +68,9 @@ object Versions {
     const val reactor = "3.2.5.RELEASE"
     const val ff4j = "1.3.0"
     const val jmh = "1.21"
-    const val classgraph = "4.8.13"
+    const val classgraph = "4.8.14"
+    const val pf4j = "2.6.0"
+    const val licensius = "0.1.1"
 
     // Plugins
     const val gradle = "5.3-rc-1"
@@ -167,6 +169,8 @@ object Deps {
     const val orsonpdf = "com.orsonpdf:orsonpdf:${Versions.orsonpdf}"
     const val openpdf = "com.github.librepdf:openpdf:${Versions.openpdf}"
     const val jsr305 = "com.google.code.findbugs:jsr305:${Versions.jsr305}"
+    const val pf4j = "org.pf4j:pf4j:${Versions.pf4j}"
+    const val licensius = "ro.fortsoft.licensius:licensius:${Versions.licensius}"
 
     const val clikt = "com.github.ajalt:clikt:${Versions.clikt}"
     const val jline = "org.jline:jline:${Versions.jline}"

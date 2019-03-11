@@ -21,6 +21,9 @@ Build
    # For publishing to maven repo
    # ./gradlew clean publish
    
+   # For publishing shaded jar
+   # ./gradlew clean publish -Pshaded=true
+   
    # For creating dist tar
    # ./gradlew clean distTar
    ```
