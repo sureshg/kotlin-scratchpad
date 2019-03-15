@@ -4,6 +4,9 @@ import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import io.sureshg.json.DefaultJsonDataAdapter
+import kotlinx.serialization.*
+import kotlinx.serialization.Optional
+import kotlinx.serialization.json.Json
 import java.util.*
 import kotlin.system.measureTimeMillis
 
@@ -54,8 +57,21 @@ fun main(args: Array<String>) {
 
     println(toHex("This is test message".toByteArray()))
 
+    println("----- Kotlinx Serialization ----")
+    // serializing objects
+    val jsonData = Json.stringify(Data.serializer(), Data(42))
+    // serializing lists
+    val jsonList = Json.stringify(Data.serializer().list, listOf(Data(42)))
+    println(jsonData) // {"a": 42, "b": "42"}
+    println(jsonList) // [{"a": 42, "b": "42"}]
+
+    // parsing data back
+    val obj = Json.parse(Data.serializer(), """{"a":42,"b":120}""")
+    println(obj) // Data(a=42, b="42")
 }
 
+@Serializable
+data class Data(val a: Int, @Optional val b: String = "35")
 
 @JsonClass(generateAdapter = true)
 data class Blog(

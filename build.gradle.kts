@@ -11,6 +11,7 @@ plugins {
     idea
     kotlinJvm
     kotlinKapt
+    kotlinxSerialization
     dokka
     shadow
     benmanesVersions
@@ -30,7 +31,6 @@ plugins {
     // kotlinNoArg
     // kotlinAllOpen
     // kotlinMultiplatform
-    // kotlinSerialization
     // mavenPublishAuth
 }
 
@@ -307,6 +307,7 @@ repositories {
     // maven(KotlinEap.url)
     mavenCentral()
     jcenter()
+    maven(Koltinx.url)
 }
 
 dependencies {
@@ -324,6 +325,7 @@ dependencies {
     implementation(Deps.retrofitLogging)
     implementation(Deps.commonsCodec)
     implementation(Deps.retrofitConverterMoshi)
+    implementation(Deps.kotlinxSerialization)
     kapt(Deps.moshiKotlinCodegen)
 
     // Logging
