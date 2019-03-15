@@ -9,6 +9,10 @@ import java.util.stream.Stream;
  * @author Suresh
  */
 public class JavaMain {
+  private static final char[] hexArray = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+  };
+
   public static void main(String[] args) {
     // var msg  = "Hello";
     // System.out.println(msg);
@@ -29,10 +33,6 @@ public class JavaMain {
     new Random().nextBytes(b);
     System.out.println("Hex: " + toHex(b));
   }
-
-  private static final char[] hexArray = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-  };
 
   public static String toHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length << 1];

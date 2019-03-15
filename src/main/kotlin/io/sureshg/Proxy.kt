@@ -2,8 +2,6 @@ package io.sureshg
 
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
-import java.util.concurrent.locks.LockSupport
-import java.util.concurrent.locks.StampedLock
 
 fun main(args: Array<String>) {
 

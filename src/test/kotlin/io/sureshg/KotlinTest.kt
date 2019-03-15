@@ -1,12 +1,17 @@
 package io.sureshg
 
 import com.nhaarman.mockitokotlin2.*
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.params.*
-import org.junit.jupiter.params.provider.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.ArgumentMatchers.anyInt
-import java.util.stream.*
+import java.util.stream.Stream
 
 
 @DisplayName("JUnit5 Kotlin Tests")
