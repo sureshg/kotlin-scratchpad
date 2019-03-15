@@ -4,6 +4,7 @@ import org.gradle.api.publish.maven.MavenPom
 
 sealed class Repo(val id: String, val url: String)
 object Jitpack : Repo("jitpack", "https://jitpack.io")
+object Koltinx : Repo("kotlinx", "https://kotlin.bintray.com/kotlinx")
 object KotlinEap : Repo("kotlin-eap", "https://dl.bintray.com/kotlin/kotlin-eap")
 object GradlePlugins : Repo("gradle_plugin", "https://plugins.gradle.org/m2/")
 object SonatypeSnapshots : Repo("sonatype-snapshots", "https://oss.sonatype.org/content/repositories/snapshots/")

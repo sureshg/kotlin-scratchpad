@@ -15,7 +15,7 @@ object Versions {
     const val jsr305 = "3.0.2"
     const val clikt = "1.6.0"
     const val moshi = "1.8.0"
-    const val okhttp = "3.13.1"
+    const val okhttp = "3.14.0"
     const val okio = "2.2.0"
     const val ok2Curl = "0.4.5"
     const val retrofit = "2.5.0"
@@ -73,8 +73,8 @@ object Versions {
     const val licensius = "0.1.1"
 
     // Plugins
-    const val gradle = "5.3-rc-1"
-    const val ktlintPlugin = "7.1.0"
+    const val gradle = "5.3-rc-3"
+    const val ktlintPlugin = "7.2.1"
     const val dokka = "0.9.17"
     const val shadow = "5.0.0"
     const val googleJib = "1.0.2"
@@ -86,7 +86,7 @@ object Versions {
     const val benmanesVersions = "0.21.0"
     const val buildScanPlugin = "2.0.2"
     const val gitPublishPlugin = "1.0.1"
-    const val swaggerGen = "2.16.0"
+    const val swaggerGen = "2.17.0"
     const val gitProperties = "2.0.0"
     const val gradleRelease = "2.8.0"
     const val mavenPublishAuth = "2.0.2"
@@ -100,7 +100,7 @@ object Deps {
     const val kotlinxReflectLite = "org.jetbrains.kotlinx:kotlinx.reflect.lite:${Versions.kotlinxReflectLite}"
     const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
     const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
-    const val kotlinSerialization =
+    const val kotlinxSerialization =
         "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.kotlinSerialization}"
     const val kotlinIO = "org.jetbrains.kotlinx:kotlinx-io-jvm:${Versions.kotlinIO}"
     const val kotlinImmutableColl =
@@ -227,8 +227,8 @@ inline val PluginDependenciesSpec.kotlinJvm get() = kotlin("jvm") version Versio
 inline val PluginDependenciesSpec.kotlinKapt get() = kotlin("kapt") version Versions.kotlin
 inline val PluginDependenciesSpec.kotlinNoArg get() = kotlin("plugin.noarg") version Versions.kotlin
 inline val PluginDependenciesSpec.kotlinAllOpen get() = kotlin("plugin.allopen") version Versions.kotlin
-inline val PluginDependenciesSpec.kotlinMultiplatform get() = kotlin("multiplatform") version Versions.kotlin
-inline val PluginDependenciesSpec.kotlinSerialization get() = kotlin("serialization") version Versions.kotlin
+inline val PluginDependenciesSpec.kotlinMultiplatform get() = id("kotlin-multiplatform") version Versions.kotlin
+inline val PluginDependenciesSpec.kotlinxSerialization get() = id("kotlinx-serialization") version Versions.kotlin
 inline val PluginDependenciesSpec.benmanesVersions get() = id("com.github.ben-manes.versions") version Versions.benmanesVersions
 inline val PluginDependenciesSpec.ktlint get() = id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
 inline val PluginDependenciesSpec.gitProperties get() = id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
