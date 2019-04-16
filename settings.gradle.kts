@@ -1,3 +1,5 @@
+rootProject.name = "kotlin-scratchpad"
+
 pluginManagement {
     repositories {
         // maven(KotlinEap.url)

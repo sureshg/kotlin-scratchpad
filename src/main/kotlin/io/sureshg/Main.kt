@@ -4,9 +4,9 @@ import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import io.sureshg.json.DefaultJsonDataAdapter
-import kotlinx.serialization.*
-import kotlinx.serialization.Optional
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.list
 import java.util.*
 import kotlin.system.measureTimeMillis
 
@@ -71,7 +71,7 @@ fun main(args: Array<String>) {
 }
 
 @Serializable
-data class Data(val a: Int, @Optional val b: String = "35")
+data class Data(val a: Int, val b: String = "35")
 
 @JsonClass(generateAdapter = true)
 data class Blog(

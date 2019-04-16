@@ -1,7 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.google.cloud.tools.jib.image.ImageFormat
-import org.jetbrains.dokka.DokkaConfiguration
-import org.jetbrains.dokka.gradle.LinkMapping
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
 
@@ -55,10 +53,24 @@ ktlint {
     ignoreFailures.set(true)
 }
 
+googleJavaFormat {
+    toolVersion = Versions.Google.javaFormat
+}
+
 idea {
     module {
-        sourceDirs.addAll(files("build/generated/source/kapt/main", "build/generated/source/kaptKotlin/main"))
-        generatedSourceDirs.addAll(files("build/generated/source/kapt/main", "build/generated/source/kaptKotlin/main"))
+        sourceDirs.addAll(
+            files(
+                "build/generated/source/kapt/main",
+                "build/generated/source/kaptKotlin/main"
+            )
+        )
+        generatedSourceDirs.addAll(
+            files(
+                "build/generated/source/kapt/main",
+                "build/generated/source/kaptKotlin/main"
+            )
+        )
     }
 }
 
@@ -89,13 +101,13 @@ jib {
 }
 
 gitProperties {
+    gitPropertiesDir = "${project.buildDir}/resources/main/META-INF/${project.name}"
     customProperties["kotlin"] = Versions.kotlin
 }
 
 release {
     revertOnFail = true
 }
-
 
 tasks {
     // Java main and test
@@ -162,15 +174,15 @@ tasks {
         outputFormat = "javadoc"
         outputDirectory = "$buildDir/javadoc"
 
-        linkMapping(delegateClosureOf<LinkMapping> {
+        linkMapping {
             dir = "src/main/kotlin"
             url = "$gitUrl/tree/master/src/main/kotlin"
             suffix = "#L"
-        })
+        }
 
-        externalDocumentationLink(delegateClosureOf<DokkaConfiguration.ExternalDocumentationLink.Builder> {
+        externalDocumentationLink {
             url = URL("https://docs.oracle.com/javase/8/docs/api/")
-        })
+        }
     }
 
     // Code Coverage
@@ -350,5 +362,6 @@ dependencies {
     // Mock
     testImplementation(Deps.mockito)
     testImplementation(Deps.mockitoKotlin)
+    testImplementation(Deps.mockk)
     testImplementation(Deps.okhttpMWS)
 }

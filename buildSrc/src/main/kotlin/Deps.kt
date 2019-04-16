@@ -5,34 +5,52 @@ import org.gradle.kotlin.dsl.version
 import org.gradle.plugin.use.PluginDependenciesSpec
 
 object Versions {
-    // Deps
-    const val kotlin = "1.3.21"
-    const val coroutines = "1.1.1"
-    const val kotlinSerialization = "0.10.0"
-    const val kotlinxReflectLite = "1.0.0"
-    const val kotlinImmutableColl = "0.1"
-    const val kotlinIO = "0.1.4"
-    const val jsr305 = "3.0.2"
-    const val clikt = "1.6.0"
+
+    const val kotlin = "1.3.30"
+
+    object Kotlinx {
+        const val coroutines = "1.2.0"
+        const val serialization = "0.11.0-1.3.30-eap-125"
+        const val reflectLite = "1.0.0"
+        const val io = "0.1.8"
+        const val immutableColl = "0.1"
+    }
+
+    object Google {
+        const val javaFormat = "1.7"
+        const val jsr305 = "3.0.2"
+        const val conscrypt = "1.4.1"
+        const val tink = "1.2.1"
+        const val truth = "0.44"
+        const val guava = "27.1-jre"
+        const val jib = "1.1.1"
+
+        object Auto {
+            const val factory = "1.0-beta6"
+            const val service = "1.0-rc5"
+            const val value = "1.6.5"
+            const val common = "0.10"
+        }
+    }
+
+    const val clikt = "1.7.0"
     const val moshi = "1.8.0"
-    const val okhttp = "3.14.0"
+    const val okhttp = "3.14.1"
     const val okio = "2.2.0"
     const val ok2Curl = "0.4.5"
     const val retrofit = "2.5.0"
     const val commonsCodec = "1.12"
     const val rsocket = "0.12.1"
     const val failsafe = "2.0.1"
-    const val assertj = "3.12.1"
-    const val graal = "1.0.0-rc12"
-    const val junit = "5.4.0"
-    const val mockito = "2.25.0"
+    const val assertj = "3.12.2"
+    const val graal = "1.0.0-rc15"
+    const val junit = "5.4.2"
+    const val mockito = "2.27.0"
     const val awaitility = "3.1.6"
     const val sshj = "0.26.0"
     const val jol = "0.9"
     const val slf4j = "1.7.26"
     const val mockitoKotlin = "2.1.0"
-    const val conscrypt = "1.4.1"
-    const val tink = "1.2.1"
     const val byteBuddy = "1.9.7"
     const val loggingRetrofit = "0.10.0"
     const val bouncyCastle = "1.60"
@@ -63,30 +81,29 @@ object Versions {
     const val cache2k = "1.2.0.Final"
     const val kolor = "0.0.2"
     const val ktlint = "0.30.0"
-    const val mockk = "1.9.1"
+    const val mockk = "1.9.3"
     const val reactiveStreams = "1.0.2"
     const val reactor = "3.2.5.RELEASE"
     const val ff4j = "1.3.0"
     const val jmh = "1.21"
-    const val classgraph = "4.8.14"
+    const val classgraph = "4.8.24"
     const val pf4j = "2.6.0"
     const val licensius = "0.1.1"
 
     // Plugins
-    const val gradle = "5.3-rc-3"
-    const val ktlintPlugin = "7.2.1"
-    const val dokka = "0.9.17"
+    const val gradle = "5.4"
+    const val dokka = "0.9.18"
+    const val ktlintPlugin = "7.3.0"
     const val shadow = "5.0.0"
-    const val googleJib = "1.0.2"
     const val sonarqube = "2.7"
     const val nemerosaVersioning = "2.8.2"
     const val springDepMgmt = "1.0.7.RELEASE"
     const val buildSrcVersions = "0.3.2"
-    const val googleJavaFormat = "0.8"
+    const val googleJavaFmtPlugin = "0.8"
     const val benmanesVersions = "0.21.0"
     const val buildScanPlugin = "2.0.2"
     const val gitPublishPlugin = "1.0.1"
-    const val swaggerGen = "2.17.0"
+    const val swaggerGen = "2.18.1"
     const val gitProperties = "2.0.0"
     const val gradleRelease = "2.8.0"
     const val mavenPublishAuth = "2.0.2"
@@ -97,20 +114,20 @@ object Versions {
 object Deps {
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
-    const val kotlinxReflectLite = "org.jetbrains.kotlinx:kotlinx.reflect.lite:${Versions.kotlinxReflectLite}"
     const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
     const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
-    const val kotlinxSerialization =
-        "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.kotlinSerialization}"
-    const val kotlinIO = "org.jetbrains.kotlinx:kotlinx-io-jvm:${Versions.kotlinIO}"
-    const val kotlinImmutableColl =
-        "org.jetbrains.kotlinx:kotlinx-collections-immutable:${Versions.kotlinImmutableColl}"
 
-    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-    const val coroutinesJdk8 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${Versions.coroutines}"
-    const val coroutinesReactor = "org.jetbrains.kotlinx:coroutines-reactor:${Versions.coroutines}"
-    const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
-    const val coroutinesDebug = "org.jetbrains.kotlinx:kotlinx-coroutines-debug:${Versions.coroutines}"
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlinx.coroutines}"
+    const val coroutinesJdk8 = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${Versions.Kotlinx.coroutines}"
+    const val coroutinesReactor = "org.jetbrains.kotlinx:coroutines-reactor:${Versions.Kotlinx.coroutines}"
+    const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Kotlinx.coroutines}"
+    const val coroutinesDebug = "org.jetbrains.kotlinx:kotlinx-coroutines-debug:${Versions.Kotlinx.coroutines}"
+    const val kotlinxSerialization =
+        "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.Kotlinx.serialization}"
+    const val kotlinxReflectLite = "org.jetbrains.kotlinx:kotlinx.reflect.lite:${Versions.Kotlinx.reflectLite}"
+    const val kotlinIO = "org.jetbrains.kotlinx:kotlinx-io-jvm:${Versions.Kotlinx.io}"
+    const val kotlinImmutableColl =
+        "org.jetbrains.kotlinx:kotlinx-collections-immutable:${Versions.Kotlinx.immutableColl}"
 
     const val okio = "com.squareup.okio:okio:${Versions.okio}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
@@ -139,8 +156,8 @@ object Deps {
     const val moshiAdapters = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
 
     const val bouncyCastle = "org.bouncycastle:bcprov-jdk15on:${Versions.bouncyCastle}"
-    const val conscryptUber = "org.conscrypt:conscrypt-openjdk-uber:${Versions.conscrypt}"
-    const val tink = "com.google.crypto.tink:tink:${Versions.tink}"
+    const val conscryptUber = "org.conscrypt:conscrypt-openjdk-uber:${Versions.Google.conscrypt}"
+    const val tink = "com.google.crypto.tink:tink:${Versions.Google.tink}"
     const val sshj = "com.hierynomus:sshj:${Versions.sshj}"
     const val smbj = "com.hierynomus:smbj:${Versions.smbj}"
     const val asn1 = "com.hierynomus:asn-one:${Versions.asn1}"
@@ -168,7 +185,7 @@ object Deps {
     const val jfreesvg = "org.jfree:jfreesvg:${Versions.jfreesvg}"
     const val orsonpdf = "com.orsonpdf:orsonpdf:${Versions.orsonpdf}"
     const val openpdf = "com.github.librepdf:openpdf:${Versions.openpdf}"
-    const val jsr305 = "com.google.code.findbugs:jsr305:${Versions.jsr305}"
+    const val jsr305 = "com.google.code.findbugs:jsr305:${Versions.Google.jsr305}"
     const val pf4j = "org.pf4j:pf4j:${Versions.pf4j}"
     const val licensius = "ro.fortsoft.licensius:licensius:${Versions.licensius}"
 
@@ -233,7 +250,7 @@ inline val PluginDependenciesSpec.benmanesVersions get() = id("com.github.ben-ma
 inline val PluginDependenciesSpec.ktlint get() = id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
 inline val PluginDependenciesSpec.gitProperties get() = id("com.gorylenko.gradle-git-properties") version Versions.gitProperties
 inline val PluginDependenciesSpec.dokka get() = id("org.jetbrains.dokka") version Versions.dokka
-inline val PluginDependenciesSpec.googleJavaFormat get() = id("com.github.sherter.google-java-format") version Versions.googleJavaFormat
+inline val PluginDependenciesSpec.googleJavaFormat get() = id("com.github.sherter.google-java-format") version Versions.googleJavaFmtPlugin
 inline val PluginDependenciesSpec.gradleRelease get() = id("net.researchgate.release") version Versions.gradleRelease
 inline val PluginDependenciesSpec.mavenPublishAuth get() = id("org.datlowe.maven-publish-auth") version Versions.mavenPublishAuth
 inline val PluginDependenciesSpec.javafx get() = id("org.openjfx.javafxplugin") version Versions.javafxPlugin
@@ -241,5 +258,5 @@ inline val PluginDependenciesSpec.jmh get() = id("me.champeau.gradle.jmh") versi
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow") version Versions.shadow
 inline val PluginDependenciesSpec.buildSrcVersions get() = id("de.fayard.buildSrcVersions") version Versions.buildSrcVersions
 inline val PluginDependenciesSpec.swaggerGenerator get() = id("org.hidetake.swagger.generator") version Versions.swaggerGen
-inline val PluginDependenciesSpec.googleJib get() = id("com.google.cloud.tools.jib") version Versions.googleJib
+inline val PluginDependenciesSpec.googleJib get() = id("com.google.cloud.tools.jib") version Versions.Google.jib
 inline val PluginDependenciesSpec.sonarqube get() = id("org.sonarqube") version Versions.sonarqube
