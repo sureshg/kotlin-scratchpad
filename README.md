@@ -1,4 +1,4 @@
-Kotlin-ScratchPad
+:wine_glass: Kotlin-ScratchPad
 =================
 [![Build Status](https://travis-ci.org/sureshg/kotlin-scratchpad.svg?branch=master)](https://travis-ci.org/sureshg/kotlin-scratchpad)
 [![Build status](https://ci.appveyor.com/api/projects/status/bryiiki9fdt6vo60?svg=true)](https://ci.appveyor.com/project/sureshg/kotlin-scratchpad)
