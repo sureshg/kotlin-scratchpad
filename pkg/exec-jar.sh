@@ -14,5 +14,5 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null && pwd )"
 EXEC=$(basename "$0")
 SELF="$DIR/$EXEC"
 
-exec java -jar ${SELF} "$@"
+exec java -jar "${SELF}" "$@"
 exit 1

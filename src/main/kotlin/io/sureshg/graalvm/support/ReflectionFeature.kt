@@ -1,9 +1,9 @@
 package io.sureshg.graalvm.support
 
 import io.github.classgraph.ClassGraph
-import org.graalvm.nativeimage.Feature
-import org.graalvm.nativeimage.Feature.BeforeAnalysisAccess
-import org.graalvm.nativeimage.RuntimeReflection
+import org.graalvm.nativeimage.hosted.Feature
+import org.graalvm.nativeimage.hosted.Feature.BeforeAnalysisAccess
+import org.graalvm.nativeimage.hosted.RuntimeReflection
 
 /**
  * GraalVM native-image feature implementation class to register the

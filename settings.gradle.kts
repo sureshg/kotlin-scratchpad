@@ -1,5 +1,3 @@
-rootProject.name = "kotlin-scratchpad"
-
 pluginManagement {
     repositories {
         // maven(KotlinEap.url)
@@ -18,3 +16,5 @@ pluginManagement {
         }
     }
 }
+
+rootProject.name = "kotlin-scratchpad"

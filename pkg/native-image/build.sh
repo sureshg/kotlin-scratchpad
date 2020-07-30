@@ -24,7 +24,7 @@ EOF
  exit 1
 fi
 
-pushd ${project_dir} > /dev/null
+pushd "${project_dir}" > /dev/null
 
 echo -e "\n\033[1;32mBuilding the app...\033[0m"
 ./gradlew clean shadowJar

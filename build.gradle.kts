@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-import com.google.cloud.tools.jib.image.ImageFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
 
@@ -94,10 +93,9 @@ jib {
         mainClass = application.mainClassName
         args = listOf(project.description, project.version.toString())
         ports = listOf("8080-8090/tcp")
-        useCurrentTimestamp = true
-        format = ImageFormat.Docker
     }
-    setExtraDirectory(File("src/main/resources"))
+
+    extraDirectories { File("src/main/resources") }
 }
 
 gitProperties {
@@ -125,7 +123,13 @@ tasks {
             verbose = true
             jvmTarget = "1.8"
             javaParameters = true
-            freeCompilerArgs += listOf("-Xjsr305=strict", "-Xjvm-default=enable", "-progressive")
+            freeCompilerArgs += listOf(
+                "-Xjsr305=strict",
+                "-Xjvm-default=enable",
+                "-XXLanguage:+InlineClasses",
+                "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
+                "-progressive"
+            )
         }
     }
 
@@ -156,7 +160,7 @@ tasks {
 
     // Uber jar
     shadowJar {
-        classifier = "uber"
+        archiveClassifier.set("uber")
         description = "Create a fat JAR of $archiveFileName and runtime dependencies."
         doLast {
             val fatJar = archiveFile.get().asFile
@@ -170,18 +174,20 @@ tasks {
 
     // Javadoc
     dokka {
-        jdkVersion = 8
         outputFormat = "javadoc"
         outputDirectory = "$buildDir/javadoc"
-
-        linkMapping {
-            dir = "src/main/kotlin"
-            url = "$gitUrl/tree/master/src/main/kotlin"
-            suffix = "#L"
-        }
-
-        externalDocumentationLink {
-            url = URL("https://docs.oracle.com/javase/8/docs/api/")
+        configuration {
+            jdkVersion = 8
+            noJdkLink = false
+            noStdlibLink = false
+            sourceLink {
+                path = "$gitUrl/tree/master/src/main/kotlin"
+                url = gitUrl
+                lineSuffix = "#L"
+            }
+            externalDocumentationLink {
+                url = URL("https://docs.oracle.com/javase/8/docs/api/")
+            }
         }
     }
 
@@ -207,7 +213,7 @@ tasks {
 
     // Generate pom
     withType<GenerateMavenPom> {
-        destination = file("$buildDir/libs/${jar.get().baseName}.pom")
+        destination = file("$buildDir/libs/${jar.get().archiveBaseName}.pom")
     }
 
     // Gradle Wrapper
@@ -322,46 +328,58 @@ repositories {
     maven(Koltinx.url)
 }
 
+// Overriding group of dependencies.
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "xx.xx") {
+            useVersion("0.0.1")
+            because("Using this version.")
+        }
+    }
+}
+
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(Deps.coroutinesCore)
-    implementation(Deps.coroutinesJdk8)
+    implementation(Deps.Kotlin.stdLibJdk8)
+    // Import a BOM
+    // implementation(enforcedPlatform())
+    implementation(Deps.Kotlinx.coroutinesCore)
+    implementation(Deps.Kotlinx.coroutinesJdk8)
 
     // HTTPS + JSON
-    implementation(Deps.retrofit)
-    implementation(Deps.okhttp)
-    implementation(Deps.okhttpTls)
-    implementation(Deps.moshi)
-    implementation(Deps.moshiAdapters)
-    implementation(Deps.retrofitCoroutinesAdapter)
-    implementation(Deps.retrofitLogging)
-    implementation(Deps.commonsCodec)
-    implementation(Deps.retrofitConverterMoshi)
-    implementation(Deps.kotlinxSerialization)
-    kapt(Deps.moshiKotlinCodegen)
+    implementation(Deps.OkHttp.okhttp)
+    implementation(Deps.OkHttp.tls)
+    implementation(Deps.Moshi.moshi)
+    implementation(Deps.Moshi.adapters)
+    implementation(Deps.Retrofit.retrofit)
+    implementation(Deps.Retrofit.kotlinCoroutinesAdapter)
+    implementation(Deps.Retrofit.logging)
+    implementation(Deps.Apache.commonsCodec)
+    implementation(Deps.Retrofit.converterMoshi)
+    implementation(Deps.Kotlinx.serialization)
+    kapt(Deps.Moshi.kotlinCodegen)
 
     // Logging
-    implementation(Deps.slf4jApi)
-    runtimeOnly(Deps.slf4jSimple)
+    implementation(Deps.Log.slf4jApi)
+    runtimeOnly(Deps.Log.slf4jSimple)
 
     // Misc
     implementation(Deps.rsocketCore)
     implementation(Deps.rsocketNetty)
     implementation(Deps.jol)
-    implementation(Deps.clikt)
+    implementation(Deps.Cli.clikt)
     implementation(Deps.failsafe)
     implementation(Deps.classgraph)
-    compileOnly(Deps.jsr305)
-    compileOnly(Deps.graalSdk)
-    compileOnly(Deps.substratevm)
+    compileOnly(Deps.Google.jsr305)
+    compileOnly(Deps.Graal.sdk)
+    compileOnly(Deps.Graal.substratevm)
 
     // JUnit5
-    testImplementation(Deps.junitJupiter)
+    testImplementation(Deps.JUnit.jupiter)
     testImplementation(Deps.assertjCore)
 
     // Mock
-    testImplementation(Deps.mockito)
-    testImplementation(Deps.mockitoKotlin)
-    testImplementation(Deps.mockk)
-    testImplementation(Deps.okhttpMWS)
+    testImplementation(Deps.Mock.mockito)
+    testImplementation(Deps.Mock.mockitoKotlin)
+    testImplementation(Deps.Mock.mockk)
+    testImplementation(Deps.OkHttp.mockWebServer)
 }

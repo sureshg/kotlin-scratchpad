@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Script : https://github.com/micronaut-projects/micronaut-profiles/blob/master/base/features/graal-native-image/skeleton/gradle-build/build-native-image.sh
 # Docker : https://github.com/micronaut-projects/micronaut-profiles/blob/master/base/features/graal-native-image/skeleton/gradle-build/Dockerfile
 # Options: https://github.com/oracle/graal/blob/master/substratevm/src/com.oracle.svm.core/src/com/oracle/svm/core/SubstrateOptions.java
@@ -22,3 +24,23 @@ native-image --no-server \
              --delay-class-initialization-to-runtime=io.netty.handler.codec.http.HttpObjectEncoder,io.netty.handler.codec.http.websocketx.WebSocket00FrameEncoder,io.netty.handler.ssl.util.ThreadLocalInsecureRandom,com.sun.jndi.dns.DnsClient
 
 # upx --brute kotlin-scratchpad
+
+### rsocket-cli example ###
+--allow-incomplete-classpath \
+-H:+ReportUnsupportedElementsAtRuntime \
+-H:InitialCollectionPolicy=com.oracle.svm.core.genscavenge.CollectionPolicy$BySpaceAndTime \
+-J-Djava.util.concurrent.ForkJoinPool.common.parallelism=1 \
+-H:+PrintAnalysisCallTree \
+-H:-AddAllCharsets \
+-H:+SpawnIsolates \
+-H:-UseServiceLoaderFeature \
+-H:+StackTrace \
+-Dio.netty.noUnsafe=true \
+-Dio.netty.noJdkZlibDecoder=true \
+--delay-class-initialization-to-runtime=io.netty.handler.ssl.JdkNpnApplicationProtocolNegotiator,io.netty.handler.ssl.ReferenceCountedOpenSslEngine,io.netty.util.internal.ObjectCleaner,io.netty.handler.ssl.ReferenceCountedOpenSslContext,io.netty.channel.DefaultChannelConfig,io.netty.handler.codec.http.HttpObjectEncoder,io.netty.handler.codec.http.websocketx.WebSocket00FrameEncoder \
+-Dfile.encoding=UTF-8
+--enable-http
+--enable-https
+-H:ReflectionConfigurationFiles=reflect.config
+
+#########
