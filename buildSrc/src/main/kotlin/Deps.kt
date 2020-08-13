@@ -23,7 +23,7 @@ object Versions {
         const val tink = "1.2.1"
         const val truth = "0.44"
         const val guava = "27.1-jre"
-        const val jib = "2.4.0"
+        const val jib = "2.5.0"
         const val jibCore = "0.15.0"
 
         object Auto {
@@ -36,7 +36,7 @@ object Versions {
 
     object OkHttp {
         const val okio = "2.2.0"
-        const val okhttp = "4.8.0"
+        const val okhttp = "4.8.1"
         const val ok2Curl = "0.4.5"
         const val digest = "0.4.0"
     }
@@ -53,14 +53,14 @@ object Versions {
     const val graal = "20.1.0"
     const val clikt = "2.8.0"
     const val commonsCodec = "1.14"
-    const val rsocket = "1.0.1"
+    const val rsocket = "1.0.2"
     const val failsafe = "2.4.0"
     const val assertj = "3.16.1"
     const val junit = "5.6.2"
     const val mockito = "3.4.6"
     const val awaitility = "3.1.6"
     const val sshj = "0.26.0"
-    const val jol = "0.11"
+    const val jol = "0.12"
     const val slf4j = "1.7.30"
     const val mockitoKotlin = "2.2.0"
     const val byteBuddy = "1.9.7"
@@ -102,14 +102,14 @@ object Versions {
     const val licensius = "0.1.1"
 
     // Plugins
-    const val gradle = "6.6-rc-3"
+    const val gradle = "6.6"
     const val dokka = "0.10.1"
     const val ktlintPlugin = "9.3.0"
     const val shadow = "6.0.0"
     const val sonarqube = "3.0"
     const val nemerosaVersioning = "2.8.2"
     const val springBoot = "2.1.6.RELEASE"
-    const val springDepMgmt = "1.0.9.RELEASE"
+    const val springDepMgmt = "1.0.10.RELEASE"
     const val buildSrcVersions = "0.7.0"
     const val googleJavaFmtPlugin = "0.9"
     const val benmanesVersions = "0.29.0"
