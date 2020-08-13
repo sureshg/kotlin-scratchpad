@@ -14,5 +14,5 @@ repositories {
 
 dependencies {
     compileOnly(gradleKotlinDsl())
-    compile(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
 }
