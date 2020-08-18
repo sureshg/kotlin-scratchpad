@@ -6,11 +6,11 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 
 object Versions {
 
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.0"
 
     object Kotlinx {
-        const val coroutines = "1.3.8"
-        const val serialization = "0.11.0-1.3.30-eap-125"
+        const val coroutines = "1.3.9"
+        const val serialization = "0.20.0-1.4-M1-release-99"
         const val reflectLite = "1.0.0"
         const val io = "0.1.8"
         const val immutableColl = "0.1"
@@ -57,7 +57,7 @@ object Versions {
     const val failsafe = "2.4.0"
     const val assertj = "3.16.1"
     const val junit = "5.6.2"
-    const val mockito = "3.4.6"
+    const val mockito = "3.5.0"
     const val awaitility = "3.1.6"
     const val sshj = "0.26.0"
     const val jol = "0.12"
