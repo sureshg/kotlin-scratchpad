@@ -173,20 +173,16 @@ tasks {
     }
 
     // Javadoc
-    dokka {
-        outputFormat = "javadoc"
-        outputDirectory = "$buildDir/javadoc"
-        configuration {
-            jdkVersion = 8
-            noJdkLink = false
-            noStdlibLink = false
+    dokkaHtml {
+        outputDirectory.set(buildDir.resolve("javadoc"))
+        dokkaSourceSets.configureEach {
+            jdkVersion.set(8)
+            noStdlibLink.set(false)
+            noJdkLink.set(false)
             sourceLink {
-                path = "$gitUrl/tree/master/src/main/kotlin"
-                url = gitUrl
-                lineSuffix = "#L"
-            }
-            externalDocumentationLink {
-                url = URL("https://docs.oracle.com/javase/8/docs/api/")
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URL("$gitUrl/tree/master/src/main/kotlin"))
+                remoteLineSuffix.set("#L")
             }
         }
     }
@@ -234,7 +230,7 @@ val sourcesJar by tasks.registering(Jar::class) {
 // Javadoc jar
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
-    from(tasks.dokka)
+    from(tasks.dokkaHtml)
 }
 
 // Tar distribution
