@@ -318,7 +318,6 @@ publishing {
 }
 
 repositories {
-    // maven(KotlinEap.url)
     mavenCentral()
     jcenter()
     maven(Koltinx.url)
@@ -367,7 +366,7 @@ dependencies {
     implementation(Deps.classgraph)
     compileOnly(Deps.Google.jsr305)
     compileOnly(Deps.Graal.sdk)
-    compileOnly(Deps.Graal.substratevm)
+    // compileOnly(Deps.Graal.substratevm)
 
     // JUnit5
     testImplementation(Deps.JUnit.jupiter)

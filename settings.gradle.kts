@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
-        // maven(KotlinEap.url)
         mavenCentral()
         gradlePluginPortal()
+        jcenter()
     }
 
     resolutionStrategy {

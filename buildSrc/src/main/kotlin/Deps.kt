@@ -10,7 +10,7 @@ object Versions {
 
     object Kotlinx {
         const val coroutines = "1.3.9"
-        const val serialization = "0.20.0-1.4-M1-release-99"
+        const val serialization = "1.0.0-RC"
         const val reflectLite = "1.0.0"
         const val io = "0.1.8"
         const val immutableColl = "0.1"
@@ -104,7 +104,7 @@ object Versions {
     // Plugins
     const val gradle = "6.6.1"
     const val dokka = "1.4.0"
-    const val ktlintPlugin = "9.3.0"
+    const val ktlintPlugin = "9.4.0"
     const val shadow = "6.0.0"
     const val sonarqube = "3.0"
     const val nemerosaVersioning = "2.8.2"
@@ -141,7 +141,7 @@ object Deps {
         const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Kotlinx.coroutines}"
         const val coroutinesDebug = "org.jetbrains.kotlinx:kotlinx-coroutines-debug:${Versions.Kotlinx.coroutines}"
         const val serialization =
-            "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.Kotlinx.serialization}"
+            "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.Kotlinx.serialization}"
         const val reflectLite = "org.jetbrains.kotlinx:kotlinx.reflect.lite:${Versions.Kotlinx.reflectLite}"
         const val io = "org.jetbrains.kotlinx:kotlinx-io-jvm:${Versions.Kotlinx.io}"
         const val immutableColl =
